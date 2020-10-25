@@ -19,7 +19,7 @@ onload = function () {
         eth.getBalance(accounts[0]).then(function (balance) {
             el('accountBalance').innerHTML = Eth.fromWei(balance, 'ether');
         });
-    }
+    });
     // var ethereumButton = document.getElementById('enableEthereumButton');
     // var showAccount = document.getElementById('showAccount');
 
