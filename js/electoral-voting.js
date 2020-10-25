@@ -4,6 +4,7 @@ onload = function() {
     } else {
         alert("Connected!");
     }
+    console.log(web3.eth.accounts)
 }
 
 function ethEnabled() {
