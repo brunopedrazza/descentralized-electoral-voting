@@ -18,6 +18,7 @@ if (!ethEnabled()) {
 
 else {
     contractToBeDeployed = new web3.eth.Contract(contractABI);
+    web3.eth.handleRevert = true;
     var accountInterval = setInterval(function () {
         web3.eth.getAccounts().then(accounts => window.account = accounts[0]);
     }, 1000);
@@ -33,6 +34,7 @@ async function deployContract(politicalOffice, country, year, startTime, endTime
             console.log('Contract deployed with success!');
             console.log('Contract address: ' + newContractInstance._address)
             window.ElectoralVoting = newContractInstance;
+            window.ElectoralVoting
         });
 }
 
@@ -46,5 +48,6 @@ async function getCandidate(number) {
     window.ElectoralVoting.methods.getCandidate(number).call({ from: window.account })
         .then(function (result) {
             console.log(result);
-        });
+        })
+        .catch(console.log);
 }
