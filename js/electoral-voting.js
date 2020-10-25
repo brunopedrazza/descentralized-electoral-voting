@@ -49,9 +49,7 @@ async function getCandidate(number) {
         .then(function (result) {
             console.log(result);
         })
-        .catch(function (error) {
-            console.log(String(error));
-        });
+        .catch(console.log);
 }
 
 async function getVotesCount(number) {
@@ -72,12 +70,7 @@ async function vote(number) {
 
 async function getElectionWinner() {
     window.ElectoralVoting.methods.getElectionWinner().call({ from: window.account })
-        .then(function (result) {
-            console.log(result);
-        })
-        .catch(function (error) {
-            console.log(String(error));
-        });
+        .then((result) => { console.log(result); }, (error) => { console.log(error);} );
 }
 
 async function getMyVote() {
