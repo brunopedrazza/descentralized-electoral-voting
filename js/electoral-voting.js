@@ -70,7 +70,12 @@ async function vote(number) {
 
 async function getElectionWinner() {
     window.ElectoralVoting.methods.getElectionWinner().call({ from: window.account })
-        .then((result) => { console.log(result); }, (error) => { console.log(error);} );
+        .then(function (result) {
+            console.log(result);
+        })
+        .catch(function (error) {
+            console.log(String(error));
+        });
 }
 
 async function getMyVote() {
