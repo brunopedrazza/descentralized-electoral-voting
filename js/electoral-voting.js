@@ -46,7 +46,8 @@ async function addCandidate(name, politicalParty, number) {
         })
         .on('transactionHash', function (transactionHash) { thash = transactionHash })
         .on('error', function (error) {
-            console.log(thash);
+            web3.eth.getTransaction(thash)
+                .then(console.log);
         });
 }
 
