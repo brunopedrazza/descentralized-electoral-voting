@@ -27,23 +27,29 @@
 			alert("Metamask or browser with Ethereum not detected!");
 		}
 		else {
-			window.ElectoralVoting = new web3.eth.Contract(contract_abi);
+			var contract = new web3.eth.Contract(contract_abi);
 			console.log(window.ElectoralVoting)
 			saveCoinbase();
 		}
 
 		async function deployContract() {
 			var args = ['Presidencia', 'Brasil', '2020', 1603630800, 1603634400];
-			window.ElectoralVoting.deploy({ data: contract_bytecode, arguments: args }).send({
+			window.ElectoralVoting.deploy({ 
+				data: contract_bytecode, 
+				arguments: args 
+			}).send({
 				from: "0x0eec886B9b61aEdd64D1A308CC08a69Ee9f6DBA3",
-				gas: 3000000
-			}, (err, res) => {
-				if (err) {
-					console.log(err);
-				}
-				if (res) {
-					console.log(res);
-				};
+				gas: 3000000,
+				gasPrice: '30000000000000'
+			}, function(error, transactionHash){})
+			.on('error', function(error){ console.log(error);})
+			.on('transactionHash', function(transactionHash){ console.log(transactionHash); })
+			.on('receipt', function(receipt){
+   				console.log(receipt.contractAddress) // contains the new contract address
+			})
+			.on('confirmation', function(confirmationNumber, receipt){ console.log(confirmationNumber);})
+			.then(function(newContractInstance){
+    			console.log(newContractInstance.options.address) // instance with the new contract address
 			});
 		}
 
