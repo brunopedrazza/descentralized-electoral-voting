@@ -37,9 +37,17 @@ async function deployContract(politicalOffice, country, year, startTime, endTime
 }
 
 async function addCandidate(name, politicalParty, number) {
+    var thash = '';
     window.ElectoralVoting.methods.addCandidate(name, politicalParty, number).send({ from: window.account })
-        .on('receipt', function (receipt) { console.log(receipt); })
-        .on('error', function (error) { console.log(error); });
+        .on('receipt', function (receipt) {
+            console.log(receipt);
+            web3.eth.getTransaction(receipt.transactionHash)
+                .then(console.log);
+        })
+        .on('transactionHash', function (transactionHash) { thash = transactionHash })
+        .on('error', function (error) {
+            console.log(thash);
+        });
 }
 
 async function getCandidate(number) {
