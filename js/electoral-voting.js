@@ -24,12 +24,11 @@ if (!ethEnabled()) {
 else {
     contractToBeDeployed = new web3.eth.Contract(contractABI);
     var accountInterval = setInterval(function () {
-        var accounts = web3.eth.getAccounts();
-        console.log(accounts);
-        if (accounts[0] !== account) {
-            account = ccounts[0];
-        }
-    }, 500);
+        web3.eth.getAccounts(function (accounts) {
+            account = accounts[0];
+            console.log(account);
+        });
+    }, 1000);
     saveCoinbase();
 }
 
