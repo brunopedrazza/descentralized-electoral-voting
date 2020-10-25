@@ -32,8 +32,8 @@ async function deployContract(politicalOffice, country, year, startTime, endTime
         .then(function (newContractInstance) { window.ElectoralVoting = newContractInstance; });
 }
 
-async function addCandidate(name, politicalParty, number) {
-    var args = [name, politicalParty, number];
+async function addCandidate() {
+    var args = ['Bruno', 'pt', 13];
     window.ElectoralVoting.methods.addCandidate(args).send({ from: window.account })
         .on('receipt', function (receipt) { console.log(receipt); })
         .on('error', function (error) { console.log(error); });
