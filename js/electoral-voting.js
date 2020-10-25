@@ -29,12 +29,15 @@ async function deployContract(politicalOffice, country, year, startTime, endTime
         .send({ from: window.account, gas: 3000000, gasPrice: '1000000000' })
         .on('error', function (error) { console.log(error); })
         .on('transactionHash', function (transactionHash) { console.log(transactionHash); })
-        .then(function (newContractInstance) { window.ElectoralVoting = newContractInstance; });
+        .then(function (newContractInstance) { 
+            console.log('Contract deployed with success!');
+            console.log('Contract address: ' + newContractInstance._address)
+            window.ElectoralVoting = newContractInstance; 
+        });
 }
 
-async function addCandidate() {
-    var args = ['Bruno', 'pt', 13];
-    window.ElectoralVoting.methods.addCandidate(args).send({ from: window.account })
+async function addCandidate(name, politicalParty, number) {
+    window.ElectoralVoting.methods.addCandidate(name, politicalParty, number).send({ from: window.account })
         .on('receipt', function (receipt) { console.log(receipt); })
         .on('error', function (error) { console.log(error); });
 }
