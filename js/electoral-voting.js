@@ -34,14 +34,13 @@ async function deployContract(politicalOffice, country, year, startTime, endTime
             console.log('Contract deployed with success!');
             console.log('Contract address: ' + newContractInstance._address)
             window.ElectoralVoting = newContractInstance;
-            window.ElectoralVoting
         });
 }
 
 async function addCandidate(name, politicalParty, number) {
     window.ElectoralVoting.methods.addCandidate(name, politicalParty, number).send({ from: window.account })
         .on('receipt', function (receipt) { console.log(receipt); })
-        .on('error', function (error) { console.log(error); });
+        .on('error', function (error, receipt) { console.log(receipt); });
 }
 
 async function getCandidate(number) {
@@ -49,7 +48,9 @@ async function getCandidate(number) {
         .then(function (result) {
             console.log(result);
         })
-        .catch(console.log);
+        .catch(function (error) {
+            console.log(error);
+        });
 }
 
 async function getVotesCount(number) {
@@ -58,7 +59,7 @@ async function getVotesCount(number) {
             console.log(result);
         })
         .catch(function (error) {
-            console.log(String(error));
+            console.log(error);
         });
 }
 
@@ -74,7 +75,7 @@ async function getElectionWinner() {
             console.log(result);
         })
         .catch(function (error) {
-            console.log(String(error));
+            console.log(error);
         });
 }
 
@@ -84,6 +85,6 @@ async function getMyVote() {
             console.log(result);
         })
         .catch(function (error) {
-            console.log(String(error));
+            console.log(error);
         });
 }
