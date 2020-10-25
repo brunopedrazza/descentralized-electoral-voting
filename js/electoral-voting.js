@@ -25,15 +25,17 @@ else {
     contractToBeDeployed = new web3.eth.Contract(contractABI);
     var account = web3.eth.accounts[0];
     var accountInterval = setInterval(function () {
-        if (web3.eth.accounts[0] !== account) {
-            account = web3.eth.accounts[0];
+        var accounts = [];
+        web3.eth.getAccounts(accounts);
+        if (accounts[0] !== account) {
+            account = ccounts[0];
         }
     }, 500);
     saveCoinbase();
 }
 
 async function deployContract() {
-    var args = ['Presidencia', 'Brasil', '2020', 1603648800, 1603652400];
+    var args = ['Presidencia', 'Brasil', '2020', 1603648800, 1603648800];
     contractToBeDeployed.deploy({
         data: contractByteCode,
         arguments: args
