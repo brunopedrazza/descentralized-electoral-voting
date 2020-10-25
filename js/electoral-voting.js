@@ -5,8 +5,7 @@ var contractToBeDeployed;
 
 const ethEnabled = () => {
     if (window.ethereum) {
-        window.web3 = new Web3(window.ethereum);
-        window.ethereum.enable();
+        window.web3 = new Web3(Web3.givenProvider || "ws://localhost:8545");
         return true;
     }
     return false;
@@ -19,6 +18,7 @@ if (!ethEnabled()) {
 else {
     contractToBeDeployed = new web3.eth.Contract(contractABI);
     web3.eth.handleRevert = true;
+    console.log(web3.eth.version)
     var accountInterval = setInterval(function () {
         web3.eth.getAccounts().then(accounts => window.account = accounts[0]);
     }, 1000);
