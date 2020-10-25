@@ -23,8 +23,8 @@ else {
     }, 1000);
 }
 
-async function deployContract() {
-    var args = ['Presidencia', 'Brasil', '2020', 1603648800, 1603648800];
+async function deployContract(politicalOffice, country, year, startTime, endTime) {
+    var args = [politicalOffice, country, year, startTime, endTime];
     contractToBeDeployed.deploy({
         data: contractByteCode,
         arguments: args
