@@ -5,8 +5,7 @@ onload = function () {
 
     var electoralVotingABI = electoralVotingMetadata.output.abi
     var electoralVotingByteCode = electoralVotingDeploy.data.bytecode.object
-    console.log(electoralVotingABI);
-    console.log(electoralVotingByteCode);
+    var myContract = new web3.eth.Contract(electoralVotingABI);
 
     var accountSelected = '';
 
