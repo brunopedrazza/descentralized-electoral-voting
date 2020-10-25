@@ -25,8 +25,7 @@ else {
     contractToBeDeployed = new web3.eth.Contract(contractABI);
     var accountInterval = setInterval(function () {
         web3.eth.getAccounts(function (accounts) {
-            account = accounts[0];
-            console.log(account);
+            console.log(accounts);
         });
     }, 1000);
     saveCoinbase();
