@@ -32,11 +32,16 @@ async function deployContract(politicalOffice, country, year, startTime, endTime
         from: window.account,
         gas: 3000000,
         gasPrice: '1000000000'
-    }, function (error, transactionHash) { })
+    }, function () { })
         .on('error', function (error) { console.log(error); })
         .on('transactionHash', function (transactionHash) { console.log(transactionHash); })
-        .on('confirmation', function (confirmationNumber, receipt) { console.log(confirmationNumber); })
         .then(function (newContractInstance) {
             window.ElectoralVoting = newContractInstance;
         });
 }
+
+async function addCandidate(name, politicalParty, number) {
+    var args = [name, politicalParty, number];
+    console.log(window.ElectoralVoting);
+}
+
