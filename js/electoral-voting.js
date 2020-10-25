@@ -11,7 +11,11 @@ if (!ethEnabled()) {
     alert("Metamask or browser with Ethereum not detected!");
 } else {
     alert("Connected!");
-    window.ethereum.on('accountsChanged', function (accounts) {
-        console.log(accounts[0]);
-    });
+    var account = '';
+    var accountInterval = setInterval(function () {
+        if (web3.eth.accounts[0] !== account) {
+            // MetaMask account is changed
+            account = web3.eth.accounts[0];
+        }
+    }, 300);
 }
