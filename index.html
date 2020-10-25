@@ -23,18 +23,20 @@
 			window.coinbase = await window.web3.eth.getCoinbase();
 		};
 
+		var contract;
+		
 		if (!ethEnabled()) {
 			alert("Metamask or browser with Ethereum not detected!");
 		}
 		else {
-			var contract = new web3.eth.Contract(contract_abi);
-			console.log(window.ElectoralVoting)
+			contract = new web3.eth.Contract(contract_abi);
+			console.log(contract)
 			saveCoinbase();
 		}
 
 		async function deployContract() {
 			var args = ['Presidencia', 'Brasil', '2020', 1603633800, 1603634400];
-			window.ElectoralVoting.deploy({ 
+			contract.deploy({ 
 				data: contract_bytecode, 
 				arguments: args 
 			}).send({
