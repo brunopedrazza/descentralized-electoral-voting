@@ -49,7 +49,9 @@ async function getCandidate(number) {
         .then(function (result) {
             console.log(result);
         })
-        .catch(console.log);
+        .catch(function (error) {
+            console.log(String(error));
+        });
 }
 
 async function getVotesCount(number) {
@@ -57,7 +59,9 @@ async function getVotesCount(number) {
         .then(function (result) {
             console.log(result);
         })
-        .catch(console.log);
+        .catch(function (error) {
+            console.log(String(error));
+        });
 }
 
 async function vote(number) {
@@ -71,7 +75,9 @@ async function getElectionWinner() {
         .then(function (result) {
             console.log(result);
         })
-        .catch(console.log);
+        .catch(function (error) {
+            console.log(String(error));
+        });
 }
 
 async function getMyVote() {
@@ -79,5 +85,7 @@ async function getMyVote() {
         .then(function (result) {
             console.log(result);
         })
-        .catch(console.log);
+        .catch(function (error) {
+            console.log(String(error));
+        });
 }
