@@ -1,7 +1,7 @@
 // import detectEthereumProvider from '@metamask/detect-provider';
 
-const ethereumButton = document.querySelector('.enableEthereumButton');
-const showAccount = document.querySelector('.showAccount');
+const ethereumButton = document.getElementById('enableEthereumButton');
+const showAccount = document.getElementById('showAccount');
 
 ethereumButton.addEventListener('click', () => {
   getAccount();
@@ -12,3 +12,9 @@ async function getAccount() {
   const account = accounts[0];
   showAccount.innerHTML = account;
 }
+
+ethereum.on('accountsChanged', function (accounts) {
+    const account = accounts[0];
+    showAccount.innerHTML = account;
+    // Time to reload your interface with accounts[0]!
+});
