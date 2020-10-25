@@ -1,7 +1,7 @@
 // import detectEthereumProvider from '@metamask/detect-provider';
 
-const ethereumButton = document.getElementById('enableEthereumButton');
-const showAccount = document.getElementById('showAccount');
+var ethereumButton = document.getElementById('enableEthereumButton');
+var showAccount = document.getElementById('showAccount');
 
 ethereumButton.addEventListener('click', () => {
   getAccount();
