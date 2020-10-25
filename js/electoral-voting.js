@@ -2,8 +2,6 @@ const contractABI = electoralVotingMetadata.output.abi;
 const contractByteCode = electoralVotingDeploy.data.bytecode.object;
 
 var contractToBeDeployed;
-var electoralVotingContract;
-var account;
 
 const ethEnabled = () => {
     if (window.ethereum) {
@@ -14,11 +12,6 @@ const ethEnabled = () => {
     return false;
 }
 
-async function saveCoinbase() {
-    window.coinbase = await window.web3.eth.getCoinbase();
-    console.log(window.coinbase);
-};
-
 if (!ethEnabled()) {
     alert("Metamask or browser with Ethereum not detected!");
 }
@@ -27,10 +20,7 @@ else {
     var accountInterval = setInterval(function () {
         web3.eth.getAccounts()
             .then(accounts => window.account = accounts[0]);
-        console.log(window.account);
-        console.log('window coinbase' + window.coinbase);
     }, 1000);
-    saveCoinbase();
 }
 
 async function deployContract() {
@@ -47,6 +37,6 @@ async function deployContract() {
         .on('transactionHash', function (transactionHash) { console.log(transactionHash); })
         .on('confirmation', function (confirmationNumber, receipt) { console.log(confirmationNumber); })
         .then(function (newContractInstance) {
-            electoralVotingContract = newContractInstance;
+            window.ElectoralVoting = newContractInstance;
         });
 }
