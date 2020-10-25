@@ -7,7 +7,10 @@
 	<script type="text/javascript" src="js/metadata.js"></script>
 	<script type="text/javascript">
 
-		const contract_abi = electoralVotingMetadata.output.abi
+		const contract_abi = electoralVotingMetadata.output.abi;
+		const contract_bytecode = electoralVotingDeploy.data.bytecode.object;
+
+		var deployButton = document.getElementById("deploy").addEventListener = deployContract;
 
 		const ethEnabled = () => {
 			if (window.ethereum) {
@@ -31,11 +34,19 @@
 			saveCoinbase();
 		}
 
+		async function deployContract() {
+			var args = ['Presidencia', 'Brasil', '2020', 10000000, 100000000];
+			window.ElectoralVoting.deploy({ data: contract_bytecode, arguments: args }).send({
+				from: "0x0eec886B9b61aEdd64D1A308CC08a69Ee9f6DBA3",
+				gas: 4700000
+			});
+		}
+
 	</script>
 </head>
 
 <body>
-	<button id="getme">Get</button>
+	<button id="deploy">Deploy Contract</button>
 	StoredData: <input type=" text" name="storedData" id="storedData">
 	<button id="setme">Set</button>
 </body>
