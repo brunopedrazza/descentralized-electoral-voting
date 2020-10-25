@@ -6,11 +6,9 @@
 	<script src="https://cdn.jsdelivr.net/gh/ethereum/web3.js@1.0.0-beta.34/dist/web3.min.js"></script>
 	<script type="text/javascript" src="js/metadata.js"></script>
 	<script type="text/javascript">
-
 		const contract_abi = electoralVotingMetadata.output.abi;
 		const contract_bytecode = electoralVotingDeploy.data.bytecode.object;
 
-		var deployButton = document.getElementById("deploy").addEventListener = deployContract;
 
 		const ethEnabled = () => {
 			if (window.ethereum) {
@@ -46,7 +44,7 @@
 </head>
 
 <body>
-	<button id="deploy">Deploy Contract</button>
+	<button id="deploy" onclick="deployContract()">Deploy Contract</button>
 	StoredData: <input type=" text" name="storedData" id="storedData">
 	<button id="setme">Set</button>
 </body>
