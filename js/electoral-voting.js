@@ -36,7 +36,7 @@ async function deployContract() {
         data: contractByteCode,
         arguments: args
     }).send({
-        from: "0x0eec886B9b61aEdd64D1A308CC08a69Ee9f6DBA3",
+        from: account,
         gas: 3000000,
         gasPrice: '1000000000'
     }, function (error, transactionHash) { })
