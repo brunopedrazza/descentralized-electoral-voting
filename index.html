@@ -5,63 +5,10 @@
 	<title>Simple Storage</title>
 	<script src="https://cdn.jsdelivr.net/gh/ethereum/web3.js@1.0.0-beta.34/dist/web3.min.js"></script>
 	<script type="text/javascript" src="js/metadata.js"></script>
-	<script type="text/javascript">
-		const contract_abi = electoralVotingMetadata.output.abi;
-		const contract_bytecode = electoralVotingDeploy.data.bytecode.object;
-
-
-		const ethEnabled = () => {
-			if (window.ethereum) {
-				window.web3 = new Web3(window.ethereum);
-				window.ethereum.enable();
-				return true;
-			}
-			return false;
-		}
-
-		async function saveCoinbase() {
-			window.coinbase = await window.web3.eth.getCoinbase();
-		};
-
-		var contract;
-
-		if (!ethEnabled()) {
-			alert("Metamask or browser with Ethereum not detected!");
-		}
-		else {
-			contract = new web3.eth.Contract(contract_abi);
-			console.log(contract);
-			saveCoinbase();
-		}
-
-		async function deployContract() {
-			var args = ['Presidencia', 'Brasil', '2020', 1603645200, 1603648800];
-			contract.deploy({ 
-				data: contract_bytecode, 
-				arguments: args 
-			}).send({
-				from: "0x0eec886B9b61aEdd64D1A308CC08a69Ee9f6DBA3",
-				gas: 3000000,
-				gasPrice: '1000000000'
-			}, function(error, transactionHash){})
-			.on('error', function(error){ console.log(error);})
-			.on('transactionHash', function(transactionHash){ console.log(transactionHash); })
-			.on('receipt', function(receipt){
-   				console.log(receipt.contractAddress) // contains the new contract address
-			})
-			.on('confirmation', function(confirmationNumber, receipt){ console.log(confirmationNumber);})
-			.then(function(newContractInstance){
-    			console.log(newContractInstance.options.address) // instance with the new contract address
-			});
-		}
-
-	</script>
 </head>
 
 <body>
 	<button id="deploy" onclick="deployContract()">Deploy Contract</button>
-	StoredData: <input type=" text" name="storedData" id="storedData">
-	<button id="setme">Set</button>
 </body>
 
 </html>
