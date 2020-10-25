@@ -3,6 +3,7 @@ const contractByteCode = electoralVotingDeploy.data.bytecode.object;
 
 var contractToBeDeployed;
 var electoralVotingContract;
+var account;
 
 const ethEnabled = () => {
     if (window.ethereum) {
@@ -22,6 +23,12 @@ if (!ethEnabled()) {
 }
 else {
     contractToBeDeployed = new web3.eth.Contract(contractABI);
+    var account = web3.eth.accounts[0];
+    var accountInterval = setInterval(function () {
+        if (web3.eth.accounts[0] !== account) {
+            account = web3.eth.accounts[0];
+        }
+    }, 500);
     saveCoinbase();
 }
 
