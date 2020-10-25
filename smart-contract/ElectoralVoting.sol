@@ -54,6 +54,15 @@ contract ElectoralVoting {
         electionYear = _electionYear;
         startTime = _startTime;
         endTime = _endTime;
+
+        // Invalid votes
+        candidates.push(Candidate({
+            name: "Invalid vote",
+            politicalParty: "",
+            number: 0
+        }));
+
+        voteCount[0] = 0;
     }
     
     /** 
@@ -158,7 +167,7 @@ contract ElectoralVoting {
         Candidate memory winningCandidate;
         for (uint i = 0; i < candidates.length; i++) {
             Candidate memory candidate = candidates[i];
-            if (voteCount[candidate.number] > winningVoteCount) {
+            if (voteCount[candidate.number] > winningVoteCount && candidate.number != 0) {
                 winningVoteCount = voteCount[candidate.number];
                 winningCandidate = candidate;
             }

@@ -51,3 +51,33 @@ async function getCandidate(number) {
         })
         .catch(console.log);
 }
+
+async function getVotesCount(number) {
+    window.ElectoralVoting.methods.getCandidateVotesCount(number).call({ from: window.account })
+        .then(function (result) {
+            console.log(result);
+        })
+        .catch(console.log);
+}
+
+async function vote(number) {
+    window.ElectoralVoting.methods.vote(number).send({ from: window.account })
+        .on('receipt', function (receipt) { console.log(receipt); })
+        .on('error', function (error) { console.log(error); });
+}
+
+async function getElectionWinner() {
+    window.ElectoralVoting.methods.getElectionWinner().call({ from: window.account })
+        .then(function (result) {
+            console.log(result);
+        })
+        .catch(console.log);
+}
+
+async function getMyVote() {
+    window.ElectoralVoting.methods.getMyVote().call({ from: window.account })
+        .then(function (result) {
+            console.log(result);
+        })
+        .catch(console.log);
+}
