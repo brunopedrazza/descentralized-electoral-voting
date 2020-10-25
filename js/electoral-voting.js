@@ -19,12 +19,12 @@ onload = function () {
     async function getAccount() {
         const accounts = await ethereum.request({ method: 'eth_requestAccounts' });
         accountSelected = accounts[0];
-        showAccount.innerHTML = account;
+        showAccount.innerHTML = accountSelected;
     }
 
     ethereum.on('accountsChanged', function (accounts) {
         accountSelected = accounts[0];
-        showAccount.innerHTML = account;
+        showAccount.innerHTML = accountSelected;
         // Time to reload your interface with accounts[0]!
     });
 }
