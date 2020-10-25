@@ -35,14 +35,14 @@
 		}
 
 		async function deployContract() {
-			var args = ['Presidencia', 'Brasil', '2020', 1603633800, 1603634400];
+			var args = ['Presidencia', 'Brasil', '2020', 1603648200, 1603648800];
 			contract.deploy({ 
 				data: contract_bytecode, 
 				arguments: args 
 			}).send({
 				from: "0x0eec886B9b61aEdd64D1A308CC08a69Ee9f6DBA3",
 				gas: 3000000,
-				gasPrice: '1'
+				gasPrice: '100000'
 			}, function(error, transactionHash){})
 			.on('error', function(error){ console.log(error);})
 			.on('transactionHash', function(transactionHash){ console.log(transactionHash); })
