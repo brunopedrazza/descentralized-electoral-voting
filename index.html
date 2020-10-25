@@ -36,9 +36,15 @@
 			var args = ['Presidencia', 'Brasil', '2020', 10000000, 100000000];
 			window.ElectoralVoting.deploy({ data: contract_bytecode, arguments: args }).send({
 				from: "0x0eec886B9b61aEdd64D1A308CC08a69Ee9f6DBA3",
-				gas: 4700000
+				gas: 3000000
+			}, (err, res) => {
+				if (err) {
+					console.log(err);
+				}
+				if (res) {
+					console.log(res);
+				};
 			});
-		}
 
 	</script>
 </head>
