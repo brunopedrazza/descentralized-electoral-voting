@@ -16,6 +16,7 @@ const ethEnabled = () => {
 
 async function saveCoinbase() {
     window.coinbase = await window.web3.eth.getCoinbase();
+    console.log(window.coinbase);
 };
 
 if (!ethEnabled()) {
@@ -25,7 +26,9 @@ else {
     contractToBeDeployed = new web3.eth.Contract(contractABI);
     var accountInterval = setInterval(function () {
         web3.eth.getAccounts()
-            .then(accounts => account = accounts[0]);
+            .then(accounts => window.account = accounts[0]);
+        console.log(window.account);
+        console.log('window coinbase' + window.coinbase);
     }, 1000);
     saveCoinbase();
 }
@@ -36,7 +39,7 @@ async function deployContract() {
         data: contractByteCode,
         arguments: args
     }).send({
-        from: account,
+        from: window.account,
         gas: 3000000,
         gasPrice: '1000000000'
     }, function (error, transactionHash) { })
