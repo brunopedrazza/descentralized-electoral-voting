@@ -1,21 +1,14 @@
-const ethEnabled = () => {
-    if (window.ethereum) {
-        window.web3 = new Web3(window.ethereum);
-        window.ethereum.enable();
-        return true;
-    }
-    return false;
-}
+// import detectEthereumProvider from '@metamask/detect-provider';
 
-if (!ethEnabled()) {
-    alert("Metamask or browser with Ethereum not detected!");
-} else {
-    alert("Connected!");
-    var account = '';
-    var accountInterval = setInterval(function () {
-        if (web3.eth.accounts[0] !== account) {
-            // MetaMask account is changed
-            account = web3.eth.accounts[0];
-        }
-    }, 300);
+const ethereumButton = document.querySelector('.enableEthereumButton');
+const showAccount = document.querySelector('.showAccount');
+
+ethereumButton.addEventListener('click', () => {
+  getAccount();
+});
+
+async function getAccount() {
+  const accounts = await ethereum.request({ method: 'eth_requestAccounts' });
+  const account = accounts[0];
+  showAccount.innerHTML = account;
 }
