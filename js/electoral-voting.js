@@ -25,8 +25,7 @@ else {
     contractToBeDeployed = new web3.eth.Contract(contractABI);
     var account = web3.eth.accounts[0];
     var accountInterval = setInterval(function () {
-        var accounts = [];
-        web3.eth.getAccounts(accounts);
+        var accounts = web3.eth.getAccounts();
         if (accounts[0] !== account) {
             account = ccounts[0];
         }
