@@ -6,6 +6,7 @@ var contractToBeDeployed;
 const ethEnabled = () => {
     if (window.ethereum) {
         window.web3 = new Web3(Web3.givenProvider || "ws://localhost:8545");
+        window.web3.handleRevert = true;
         return true;
     }
     return false;
@@ -17,8 +18,6 @@ if (!ethEnabled()) {
 
 else {
     contractToBeDeployed = new web3.eth.Contract(contractABI);
-    web3.eth.handleRevert = true;
-    console.log(web3.eth.version);
     var accountInterval = setInterval(function () {
         web3.eth.getAccounts().then(accounts => window.account = accounts[0]);
     }, 1000);
@@ -40,7 +39,7 @@ async function deployContract(politicalOffice, country, year, startTime, endTime
 async function addCandidate(name, politicalParty, number) {
     window.ElectoralVoting.methods.addCandidate(name, politicalParty, number).send({ from: window.account })
         .on('receipt', function (receipt) { console.log(receipt); })
-        .on('error', function (error, receipt) { console.log(receipt); });
+        .on('error', function (error) { console.log(error); });
 }
 
 async function getCandidate(number) {
