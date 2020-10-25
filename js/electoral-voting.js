@@ -33,7 +33,7 @@ else {
 }
 
 async function deployContract() {
-    var args = ['Presidencia', 'Brasil', '2020', 1603645200, 1603648800];
+    var args = ['Presidencia', 'Brasil', '2020', 1603648800, 1603652400];
     contractToBeDeployed.deploy({
         data: contractByteCode,
         arguments: args
