@@ -92,7 +92,7 @@ contract ElectoralVoting {
      * @return name_ name of the candidate searched
      * @return politicalParty_ political party of the candidate searched
      */
-    function getCantidate(uint32 _number) public view returns (string memory name_, string memory politicalParty_) {
+    function getCandidate(uint32 _number) public view returns (string memory name_, string memory politicalParty_) {
         bool found = false;
         Candidate memory candidate;
         for (uint i = 0; i < candidates.length; i++) {
@@ -113,7 +113,7 @@ contract ElectoralVoting {
      * @param _number number of the candidate
      * @return voteCount_ number of votes of the candidate
      */
-    function getCantidateVotesCount(uint32 _number) public view returns (uint32 voteCount_) {
+    function getCandidateVotesCount(uint32 _number) public view returns (uint32 voteCount_) {
         require(now > endTime, "You should wait for the election to end to see candidate votes count.");
         
         voteCount_ = voteCount[_number];
