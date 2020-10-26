@@ -66,7 +66,9 @@ async function deployContract(politicalOffice, country, year, startTime, endTime
                 showErrorReason('Unknown error while trying to deploy the contract.');
             })
             .then(function (newContractInstance) {
-                console.log('Contract deployed with success!');
+                const message = 'Contract deployed with success!';
+                console.log(message);
+                showSuccessMessage(message);
                 console.log('Contract address: ' + newContractInstance._address)
                 window.ElectoralVoting = newContractInstance;
                 getElectionInformations();
@@ -95,7 +97,9 @@ async function addCandidate(name, politicalParty, number) {
         window.ElectoralVoting.methods.addCandidate(name, politicalParty, number)
             .send({ from: window.web3.eth.defaultAccount })
             .on('receipt', function (receipt) {
-                console.log('Candidate added with success.');
+                const message = 'Candidate added with success.';
+                console.log(message);
+                showSuccessMessage(message);
                 console.log(receipt);
             })
             .catch(function (error) {
@@ -110,7 +114,8 @@ async function addCandidate(name, politicalParty, number) {
 }
 
 async function getElectionInformations() {
-    window.ElectoralVoting.methods.getElectionInformations().call()
+    window.ElectoralVoting.methods.getElectionInformations()
+        .call({ from: window.web3.eth.defaultAccount })
         .then(function (result) {
             console.log('Election informations was found with success.');
             var result = {
@@ -133,46 +138,73 @@ async function getElectionInformations() {
 }
 
 async function getCandidate(number) {
-    window.ElectoralVoting.methods.getCandidate(number).call()
-        .then(function (result) {
-            console.log('Candidate found with success.');
-            console.log(result);
-        })
-        .catch(function (error) {
-            logError(error.reason);
-            showErrorReason(error.reason);
-        });
+    try {
+        window.ElectoralVoting.methods.getCandidate(number)
+            .call({ from: window.web3.eth.defaultAccount })
+            .then(function (result) {
+                const message = 'Candidate found with success.';
+                console.log(message);
+                showSuccessMessage(message);
+                console.log(result);
+            })
+            .catch(function (error) {
+                logError(error.reason);
+                showErrorReason(error.reason);
+            });
+    }
+    catch {
+        logError('getCandidate');
+        showErrorReason('Invalid inputs to get a candidate.');
+    }
 }
 
 async function getVotesCount(number) {
-    window.ElectoralVoting.methods.getCandidateVotesCount(number).call()
-        .then(function (result) {
-            console.log('Number of votes for this candidate:');
-            console.log(result);
-        })
-        .catch(function (error) {
-            logError(error.reason);
-            showErrorReason(error.reason);
-        });
+    try {
+        window.ElectoralVoting.methods.getCandidateVotesCount(number)
+            .call({ from: window.web3.eth.defaultAccount })
+            .then(function (result) {
+                console.log('Number of votes for this candidate:');
+                console.log(result);
+            })
+            .catch(function (error) {
+                logError(error.reason);
+                showErrorReason(error.reason);
+            });
+    }
+    catch {
+        logError('getVotesCount');
+        showErrorReason('Invalid inputs to get a votes count.');
+    }
 }
 
 async function vote(number) {
-    window.ElectoralVoting.methods.vote(number)
-        .send({ from: window.web3.eth.defaultAccount })
-        .on('receipt', function (receipt) {
-            console.log('Your vote was computed with success.');
-            console.log(receipt);
-        })
-        .catch(function (error) {
-            logError(error.reason);
-            showErrorReason(error.reason);
-        });
+    try {
+        window.ElectoralVoting.methods.vote(number)
+            .send({ from: window.web3.eth.defaultAccount })
+            .on('receipt', function (receipt) {
+                const message = 'Your vote was computed with success.';
+                console.log(message);
+                showSuccessMessage(message);
+                console.log(receipt);
+            })
+            .catch(function (error) {
+                logError(error.reason);
+                showErrorReason(error.reason);
+            });
+    }
+    catch {
+        logError('vote');
+        showErrorReason('Invalid inputs to vote for a candidate.');
+    }
 }
 
 async function getElectionWinner() {
-    window.ElectoralVoting.methods.getElectionWinner().call()
+    window.ElectoralVoting.methods.getElectionWinner()
+        .call({ from: window.web3.eth.defaultAccount })
         .then(function (result) {
-            console.log('The winner was computed with success.');
+            const message = 'The winner was computed with success.';
+            console.log(message);
+            showSuccessMessage(message);
             console.log(result);
         })
         .catch(function (error) {
@@ -182,9 +214,12 @@ async function getElectionWinner() {
 }
 
 async function getMyVote() {
-    window.ElectoralVoting.methods.getMyVote().call()
+    window.ElectoralVoting.methods.getMyVote()
+        .call({ from: window.web3.eth.defaultAccount })
         .then(function (result) {
-            console.log('Your vote was returned with success.');
+            const message = 'Your vote was returned with success.';
+            console.log(message);
+            showSuccessMessage(message);
             console.log(result);
         })
         .catch(function (error) {
@@ -200,12 +235,23 @@ function logError(message) {
 function showErrorReason(reason) {
     var errorMessage = document.getElementById('error-message');
     errorMessage.innerHTML = reason;
-    setTimeout(hideErrorReason, 7000);
+    setTimeout(hideErrorReason, 10000);
 }
 
 function hideErrorReason() {
     var errorMessage = document.getElementById('error-message');
     errorMessage.innerHTML = "";
+}
+
+function showSuccessMessage(message) {
+    var successMessage = document.getElementById('success-message');
+    successMessage.innerHTML = message;
+    setTimeout(hideSuccessMessage, 10000);
+}
+
+function hideSuccessMessage() {
+    var successMessage = document.getElementById('success-message');
+    successMessage.innerHTML = "";
 }
 
 function showInformations(info) {
