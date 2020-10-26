@@ -177,7 +177,7 @@ function killFirstStep() {
 function createSpanElement(text) {
     var information = document.getElementById("information");
     var spanElement = document.createElement("SPAN");
-    var textElement = document.createTextNode(text);
+    var textElement = document.createTextNode(text + "<br>");
     spanElement.appendChild(textElement);
     information.appendChild(spanElement);
 }
