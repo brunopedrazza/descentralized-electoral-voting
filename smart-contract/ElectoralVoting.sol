@@ -17,7 +17,7 @@ contract ElectoralVoting {
         bool voted;
     }
 
-    address public governmentOwner;
+    address public responsible;
     
     string public politicalOffice;
     string public country;
@@ -48,7 +48,7 @@ contract ElectoralVoting {
         require(_startTime < _endTime, "The end time cannot be less than the start time.");
         require(now < _startTime, "The current time cannot be greater than the start time.");
         
-        governmentOwner = msg.sender;
+        responsible = msg.sender;
         politicalOffice = _politicalOffice;
         country = _country;
         electionYear = _electionYear;
@@ -74,7 +74,7 @@ contract ElectoralVoting {
     function addCandidate(string memory _name, 
                         string memory _politicalParty, 
                         uint32 _number) public {
-        require(msg.sender == governmentOwner, "Only government owner can add a candidate.");
+        require(msg.sender == responsible, "Only government owner can add a candidate.");
         require(now < startTime, "A candidate can't be added after the election start time.");
         
         bool foundSameCandidate = false;
@@ -93,6 +93,25 @@ contract ElectoralVoting {
             number: _number
         }));
         voteCount[_number] = 0;
+    }
+
+    /** 
+     * @dev Get the election information
+     * @return responsible_ address of the responsable for election
+     * @return politicalOffice_ political office to be disputed
+     * @return country_ country of election
+     * @return year_ year of election
+     * @return startTime_ time that election begins
+     * @return endTime_ time that election ends
+     */
+    function getElectionInformations() public view returns (address responsible_, string memory politicalOffice_, 
+                            string memory country_, string memory year_, uint256 startTime_, uint256 endTime_) {
+        responsible_ = responsible;
+        politicalOffice_ = politicalOffice;
+        country_ = country;
+        year_ = electionYear;
+        startTime_ = startTime;
+        endTime_ = endTime;
     }
     
     /** 
@@ -138,7 +157,7 @@ contract ElectoralVoting {
         require(now < endTime, "The election has ended.");
         require(now >= startTime, "The election has not yet started.");
         
-        require(governmentOwner != senderAddress, "The government owner is not able to vote.");
+        require(responsible != senderAddress, "The government owner is not able to vote.");
         require(!voters[senderAddress].voted, "You already voted.");
         require(hasCandidate(_number), "Candidate especified not found.");
         
@@ -187,7 +206,7 @@ contract ElectoralVoting {
     function getMyVote() public view returns (string memory name_, string memory politicalParty_, uint32 number_) {
         address senderAddress = msg.sender;
         
-        require(governmentOwner != senderAddress, "The government owner is not able to vote.");
+        require(responsible != senderAddress, "The government owner is not able to vote.");
         require(now >= startTime, "The election has not yet started.");
         require(voters[senderAddress].voted, "You haven't voted yet.");
         
@@ -206,5 +225,4 @@ contract ElectoralVoting {
         }
         return false;
     }
-    
 }
