@@ -112,7 +112,6 @@ async function addCandidate(name, politicalParty, number) {
             .send({ from: window.web3.eth.defaultAccount })
             .on('receipt', function (receipt) {
                 const message = 'Candidate added with success.';
-                clearAddCandidateForm();
                 hideLoadingMessage();
                 console.log(message);
                 showSuccessMessage(message);
@@ -158,7 +157,7 @@ async function getElectionInformations() {
 }
 
 function callGetCandidate() {
-    var number = document.getElementById("candidate-number-get");
+    var number = document.getElementById("candidate-number-get").value;
     getCandidate(number);
 }
 
@@ -203,7 +202,7 @@ async function getVotesCount(number) {
 }
 
 function callVote() {
-    var number = document.getElementById("vote-number");
+    var number = document.getElementById("vote-number").value;
     showLoadingMessage("Voting...");
     vote(number);
 }
@@ -381,12 +380,6 @@ function showFirstStep() {
 function showAddCandidate() {
     var addCandidate = document.getElementById("add-candidate-form");
     addCandidate.style.display = "block";
-}
-
-function clearAddCandidateForm() {
-    document.getElementById("candidate-name").value = "";
-    document.getElementById("political-party").value = "";
-    document.getElementById("candidate-number").value = "";
 }
 
 function createSpanElement(text) {
