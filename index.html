@@ -37,15 +37,17 @@
 	</div>
 	<div id="second-step">
 		<div id="information"></div>
-		<div id="vote-form">
-			<h3>Vote for a candidate</h3>
-			Number: <input type="number" id="vote-number">
-			<button id="vote" onclick="callVote()">Vote</button><br>
-		</div>
-		<div id="check-vote-form">
-			<h3>Check your vote</h3>
-			<button id="check-vote" onclick="callGetMyVote()">Check my vote</button><br>
-			<div id="my-vote"></div>
+		<div id="voters-view">
+			<div id="vote-form">
+				<h3>Vote for a candidate</h3>
+				Number: <input type="number" id="vote-number">
+				<button id="vote" onclick="callVote()">Vote</button><br>
+			</div>
+			<div id="check-vote-form">
+				<h3>Check your vote</h3>
+				<button id="check-vote" onclick="callGetMyVote()">Check my vote</button><br>
+				<div id="my-vote"></div>
+			</div>
 		</div>
 		<div id="add-candidate-form">
 			<h3>Add a candidate</h3>
