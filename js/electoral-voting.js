@@ -24,8 +24,7 @@ else {
 }
 
 function callDeployContract() {
-    var title = document.getElementById("title");
-    title.innerHTML = "Deploy ai";
+    changeTitle("Deploying the contract...");
     var politicalOffice = document.getElementById("political-office").value;
     var country = document.getElementById("country").value;
     var electionYear = document.getElementById("election-year").value;
@@ -33,6 +32,7 @@ function callDeployContract() {
     var endTime = Date.parse(document.getElementById("end-time").value);
 
     deployContract(politicalOffice, country, electionYear, secondsSinceEpoch(startTime), secondsSinceEpoch(endTime));
+    showInformations();
 }
 
 async function deployContract(politicalOffice, country, year, startTime, endTime) {
@@ -57,6 +57,7 @@ function useExistingContract() {
     var existingContractAddress = document.getElementById("contract-address").value;
     window.ElectoralVoting = new web3.eth.Contract(contractABI, existingContractAddress);
     console.log('Existing ElectoralVoting contract has loaded.');
+    showInformations();
 }
 
 async function addCandidate(name, politicalParty, number) {
@@ -75,7 +76,14 @@ async function getElectionInformations() {
     window.ElectoralVoting.methods.getElectionInformations().call({ from: window.account })
         .then(function (result) {
             console.log('Election informations was found with success.');
-            console.log(result); 
+            console.log(result);
+            return {
+                "responsible": result.responsible_,
+                "politicalOffice": result.politicalOffice_,
+                "country": result.year_,
+                "startTime": epochToDate(result.startTime_),
+                "endTime": epochToDate(result.endTime_),
+            };
         })
         .catch(function (error) {
             handleError('getElectionInformations');
@@ -87,7 +95,7 @@ async function getCandidate(number) {
     window.ElectoralVoting.methods.getCandidate(number).call({ from: window.account })
         .then(function (result) {
             console.log('Candidate found with success.');
-            console.log(result); 
+            console.log(result);
         })
         .catch(function (error) {
             handleError('getCandidate');
@@ -147,6 +155,42 @@ function handleError(from){
     console.log('There was an error: ' + from);
 }
 
-function secondsSinceEpoch(d){  
-    return Math.floor( d / 1000 );  
+function showInformations() {
+    killFirstStep();
+    var response = await getElectionInformations();
+    changeTitle(response.politicalOffice + "election in " + response.country + " " + response.year);
+
+    createSpanElement('Responsible address: ' + response.responsible);
+    createSpanElement('Political office: ' + response.politicalOffice);
+    createSpanElement('Country: ' + response.country);
+    createSpanElement('Year: ' + response.year);
+    createSpanElement('Start time: ' + response.startTime);
+    createSpanElement('End time: ' + response.endTime);
+}
+
+function killFirstStep() {
+    var firstStep = document.getElementById("first-step");
+    firstStep.remove();
+}
+
+function createSpanElement(text) {
+    var information = documento.getElementById("information");
+    var spanElement = document.createElement("SPAN");
+    var textElement = document.createTextNode(text);
+    spanElement.appendChild(textElement);
+    information.appendChild(spanElement);
+}
+
+function changeTitle(text) {
+    var title = document.getElementById("title");
+    title.innerHTML = "Deploying the contract...";
 } 
+
+function secondsSinceEpoch(date) {  
+    return Math.floor( date / 1000 );  
+}
+
+function epochToDate(seconds) {
+    var d = new Date(0);
+    return d.setUTCSeconds(seconds);
+}
