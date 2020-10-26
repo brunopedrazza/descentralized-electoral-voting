@@ -118,6 +118,7 @@ async function addCandidate(name, politicalParty, number) {
                 hideLoadingMessage();
                 console.log(message);
                 showSuccessMessage(message);
+                addCandidateToList(name, politicalParty, number);
                 console.log(receipt);
             })
             .catch(function (error) {
@@ -467,6 +468,36 @@ function changeResponsibleMessage() {
     else {
         responsibleMessage.innerHTML = "";
     }
+}
+
+function addCandidateToList(name, politicalParty, number) {
+    var h6 = document.createElement("H6");
+    h6.className = "my-0";
+    var text = document.createTextNode(name);
+    h6.appendChild(text);
+
+    var small = document.createElement("SMALL");
+    small.className = "text-muted";
+    var text = document.createTextNode(politicalParty);
+    small.appendChild(text);
+
+    var div = document.createElement("DIV");
+    div.appendChild(h6);
+    div.appendChild(small);
+
+    var span = document.createElement("SPAN");
+    span.className = "text-muted";
+    var text = document.createTextNode(number);
+    span.appendChild(text);
+
+    var li = document.createElement("LI");
+    li.className = "list-group-item d-flex justify-content-between lh-condensed";
+
+    li.appendChild(div);
+    li.appendChild(span);
+
+    var list = document.getElementById("candidates-list");
+    list.appendChild(li);
 }
 
 function secondsSinceEpoch(date) {
