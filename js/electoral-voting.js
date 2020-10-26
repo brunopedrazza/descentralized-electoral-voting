@@ -57,25 +57,19 @@ async function deployContract(politicalOffice, country, year, startTime, endTime
     contractToBeDeployed.defaultAccount = window.web3.eth.defaultAccount;
     console.log("Deploying contract with these arguments:");
     console.log(args);
-    try {
-        contractToBeDeployed.deploy({ data: contractByteCode, arguments: args })
-            .send({ from: window.web3.eth.defaultAccount })
-            .catch(function (error) {
-                logError(error.reason);
-                showErrorReason(error.reason);
-            })
-            .on('transactionHash', function (transactionHash) { console.log(transactionHash); })
-            .then(function (newContractInstance) {
-                console.log('Contract deployed with success!');
-                console.log('Contract address: ' + newContractInstance._address)
-                window.ElectoralVoting = newContractInstance;
-                getElectionInformations();
-            });
-    }
-    catch {
-        logError('deployContract');
-        showErrorReason('Invalid inputs to deploy the contract.');
-    }
+    contractToBeDeployed.deploy({ data: contractByteCode, arguments: args })
+        .send({ from: window.web3.eth.defaultAccount })
+        .catch(function (error) {
+            logError(error.reason);
+            showErrorReason(error.reason);
+        })
+        .on('transactionHash', function (transactionHash) { console.log(transactionHash); })
+        .then(function (newContractInstance) {
+            console.log('Contract deployed with success!');
+            console.log('Contract address: ' + newContractInstance._address)
+            window.ElectoralVoting = newContractInstance;
+            getElectionInformations();
+        });
 }
 
 function useExistingContract() {
@@ -91,29 +85,23 @@ function useExistingContract() {
 }
 
 async function addCandidate(name, politicalParty, number) {
-    try {
-        window.ElectoralVoting.methods.addCandidate(name, politicalParty, number)
-            .send({ from: window.web3.eth.defaultAccount })
-            .on('receipt', function (receipt) {
-                console.log('Candidate added with success.');
-                console.log(receipt);
-            })
-            .catch(function (error) {
-                logError(error.reason);
-                showErrorReason(error.reason);
-            });
-    }
-    catch {
-        logError('addCandidate');
-        showErrorReason('Invalid inputs to add a candidate.');
-    }
+    window.ElectoralVoting.methods.addCandidate(name, politicalParty, number)
+        .send({ from: window.web3.eth.defaultAccount })
+        .on('receipt', function (receipt) {
+            console.log('Candidate added with success.');
+            console.log(receipt);
+        })
+        .catch(function (error) {
+            logError(error.reason);
+            showErrorReason(error.reason);
+        });
 }
 
 async function getElectionInformations() {
     window.ElectoralVoting.methods.getElectionInformations().call()
         .then(function (result) {
             console.log('Election informations was found with success.');
-            var result =  {
+            var result = {
                 "responsible": result.responsible_,
                 "politicalOffice": result.politicalOffice_,
                 "country": result.country_,
@@ -133,67 +121,49 @@ async function getElectionInformations() {
 }
 
 async function getCandidate(number) {
-    try {
-        window.ElectoralVoting.methods.getCandidate(number).call()
-            .then(function (result) {
-                console.log('Candidate found with success.');
-                console.log(result);
-            })
-            .catch(function (error) {
-                logError(error.reason);
-                showErrorReason(error.reason);
-            });
-    }
-    catch {
-        logError('getCandidate');
-        showErrorReason('Invalid inputs to get a candidate.');
-    }
+    window.ElectoralVoting.methods.getCandidate(number).call()
+        .then(function (result) {
+            console.log('Candidate found with success.');
+            console.log(result);
+        })
+        .catch(function (error) {
+            logError(error.reason);
+            showErrorReason(error.reason);
+        });
 }
 
 async function getVotesCount(number) {
-    try {
-        window.ElectoralVoting.methods.getCandidateVotesCount(number).call()
-            .then(function (result) {
-                console.log('Number of votes for this candidate:');
-                console.log(result); 
-            })
-            .catch(function (error) {
-                logError(error.reason);
-                showErrorReason(error.reason);
-            });
-    }
-    catch {
-        logError('getVotesCount');
-        showErrorReason('Invalid inputs to get votes count.');
-    }
+    window.ElectoralVoting.methods.getCandidateVotesCount(number).call()
+        .then(function (result) {
+            console.log('Number of votes for this candidate:');
+            console.log(result);
+        })
+        .catch(function (error) {
+            logError(error.reason);
+            showErrorReason(error.reason);
+        });
 }
 
 async function vote(number) {
-    try {
-        window.ElectoralVoting.methods.vote(number)
-            .send({ from: window.web3.eth.defaultAccount })
-            .on('receipt', function (receipt) {
-                console.log('Your vote was computed with success.');
-                console.log(receipt); 
-            })
-            .catch(function (error) {
-                logError(error.reason);
-                showErrorReason(error.reason);
-            });
-    }
-    catch {
-        logError('vote');
-        showErrorReason('Invalid inputs to vote.');
-    }
+    window.ElectoralVoting.methods.vote(number)
+        .send({ from: window.web3.eth.defaultAccount })
+        .on('receipt', function (receipt) {
+            console.log('Your vote was computed with success.');
+            console.log(receipt);
+        })
+        .catch(function (error) {
+            logError(error.reason);
+            showErrorReason(error.reason);
+        });
 }
 
 async function getElectionWinner() {
     window.ElectoralVoting.methods.getElectionWinner().call()
         .then(function (result) {
             console.log('The winner was computed with success.');
-            console.log(result); 
+            console.log(result);
         })
-        .catch(function (error) { 
+        .catch(function (error) {
             logError(error.reason);
             showErrorReason(error.reason);
         });
@@ -202,8 +172,8 @@ async function getElectionWinner() {
 async function getMyVote() {
     window.ElectoralVoting.methods.getMyVote().call()
         .then(function (result) {
-            console.log('Your vote was returned with success.'); 
-            console.log(result); 
+            console.log('Your vote was returned with success.');
+            console.log(result);
         })
         .catch(function (error) {
             logError(error.reason);
@@ -211,17 +181,17 @@ async function getMyVote() {
         });
 }
 
-function logError(message){
+function logError(message) {
     console.log('There was an error: ' + message);
 }
 
-function showErrorReason(reason){
+function showErrorReason(reason) {
     var errorMessage = document.getElementById('error-message');
     errorMessage.innerHTML = reason;
-    setTimeout(hideErrorReason,7000);
+    setTimeout(hideErrorReason, 7000);
 }
 
-function hideErrorReason(){
+function hideErrorReason() {
     var errorMessage = document.getElementById('error-message');
     errorMessage.innerHTML = "";
 }
@@ -245,7 +215,7 @@ function hideFirstStep() {
 
 function hideAddCandidate() {
     var addCandidate = document.getElementById("add-candidate");
-    if (addCandidate){
+    if (addCandidate) {
         addCandidate.remove();
     }
 }
@@ -325,8 +295,8 @@ function changeResponsibleMessage() {
     }
 }
 
-function secondsSinceEpoch(date) {  
-    return Math.floor( date / 1000 );  
+function secondsSinceEpoch(date) {
+    return Math.floor(date / 1000);
 }
 
 function epochToDate(seconds) {
