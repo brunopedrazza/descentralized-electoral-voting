@@ -148,6 +148,7 @@ async function getElectionInformations() {
             };
             console.log(result);
             window.responsible = result.responsible;
+            window.isResponsible = result.responsible == window.web3.eth.defaultAccount;
             showInformations(result);
             changeResponsibleMessage();
         })
