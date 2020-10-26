@@ -1,12 +1,3 @@
-const { title } = require("process");
-
-var title;
-
-onload = function() {
-    title = document.getElementById("title");
-    title.value = "Testando";
-}
-
 const contractABI = electoralVotingMetadata.output.abi;
 const contractByteCode = electoralVotingDeploy.data.bytecode.object;
 
@@ -33,11 +24,23 @@ else {
 }
 
 function callDeployContract() {
-    title.value = "Deploy ai.";
+    var title = document.getElementById("title");
+    title.innerHTML = "Deploy ai";
+    var politicalOffice = document.getElementById("political-office").value;
+    var country = document.getElementById("country").value;
+    var electionYear = document.getElementById("election-year").value;
+    var startTime = Date.parse(document.getElementById("start-time").value);
+    console.log(startTime);
+    var endTime = Date.parse(document.getElementById("end-time").value);
+    console.log(endTime);
+
+    deployContract(politicalOffice, country, electionYear, secondsSinceEpoch(startTime), secondsSinceEpoch(endTime));
 }
 
 async function deployContract(politicalOffice, country, year, startTime, endTime) {
     var args = [politicalOffice, country, year, startTime, endTime];
+    console.log("Deploying contract with these arguments:");
+    console.log(args);
     contractToBeDeployed.deploy({ data: contractByteCode, arguments: args })
         .send({ from: window.account })
         .on('error', function (error) {
@@ -50,6 +53,12 @@ async function deployContract(politicalOffice, country, year, startTime, endTime
             console.log('Contract address: ' + newContractInstance._address)
             window.ElectoralVoting = newContractInstance;
         });
+}
+
+function useExistingContract() {
+    var existingContractAddress = document.getElementById("contract-address").value;
+    window.ElectoralVoting = new web3.eth.Contract(contractABI, existingContractAddress);
+    console.log('Existing ElectoralVoting contract has loaded.');
 }
 
 async function addCandidate(name, politicalParty, number) {
@@ -127,3 +136,7 @@ async function getMyVote() {
 function handleError(from){
     console.log('There was an error: ' + from);
 }
+
+function secondsSinceEpoch(d){  
+    return Math.floor( d / 1000 );  
+} 
