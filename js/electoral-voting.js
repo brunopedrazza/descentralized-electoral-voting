@@ -175,11 +175,13 @@ function killFirstStep() {
 }
 
 function createSpanElement(text) {
+    var brElement = document.createElement("BR");
     var information = document.getElementById("information");
     var spanElement = document.createElement("SPAN");
-    var textElement = document.createTextNode(text + "<br>");
+    var textElement = document.createTextNode(text);
     spanElement.appendChild(textElement);
     information.appendChild(spanElement);
+    information.appendChild(brElement);
 }
 
 function changeTitle(text) {
