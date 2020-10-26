@@ -112,6 +112,7 @@ async function addCandidate(name, politicalParty, number) {
             .send({ from: window.web3.eth.defaultAccount })
             .on('receipt', function (receipt) {
                 const message = 'Candidate added with success.';
+                clearAddCandidateForm();
                 hideLoadingMessage();
                 console.log(message);
                 showSuccessMessage(message);
@@ -156,6 +157,11 @@ async function getElectionInformations() {
         });
 }
 
+function callGetCandidate() {
+    var number = document.getElementById("candidate-number-get");
+    getCandidate(number);
+}
+
 async function getCandidate(number) {
     try {
         window.ElectoralVoting.methods.getCandidate(number)
@@ -196,6 +202,12 @@ async function getVotesCount(number) {
     }
 }
 
+function callVote() {
+    var number = document.getElementById("vote-number");
+    showLoadingMessage("Voting...");
+    vote(number);
+}
+
 async function vote(number) {
     try {
         window.ElectoralVoting.methods.vote(number)
@@ -203,17 +215,27 @@ async function vote(number) {
             .on('receipt', function (receipt) {
                 const message = 'Your vote was computed with success.';
                 console.log(message);
+                hideLoadingMessage();
                 showSuccessMessage(message);
                 console.log(receipt);
             })
             .catch(function (error) {
                 logError(error.reason);
+                hideLoadingMessage();
                 showErrorReason(error.reason);
             });
     }
     catch {
         logError('vote');
+        hideLoadingMessage();
         showErrorReason('Invalid inputs to vote for a candidate.');
+    }
+}
+
+function callGetWinner() {
+    var response = getElectionWinner();
+    if (response) {
+        console.log('call get winner result' + response);
     }
 }
 
@@ -224,7 +246,13 @@ async function getElectionWinner() {
             const message = 'The winner was computed with success.';
             console.log(message);
             showSuccessMessage(message);
+            result = {
+                "name": result.name_,
+                "politicalParty": result.politicalParty_,
+                "number": result.number_
+            };
             console.log(result);
+            return result;
         })
         .catch(function (error) {
             logError(error.reason);
@@ -340,6 +368,12 @@ function showFirstStep() {
 function showAddCandidate() {
     var addCandidate = document.getElementById("add-candidate-form");
     addCandidate.style.display = "block";
+}
+
+function clearAddCandidateForm() {
+    document.getElementById("candidate-name").value = "";
+    document.getElementById("political-party").value = "";
+    document.getElementById("candidate-number").value = "";
 }
 
 function createSpanElement(text) {

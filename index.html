@@ -22,6 +22,7 @@
 	<h3 id="responsible-message"></h3>
 	<div id="first-step">
 		<div id="deploy-form">
+			<h3>Elections information</h3>
 			Political office: <input type="text" id="political-office"><br>
 			Country: <input type="text" id="country"><br>
 			Election year: <input type="text" id="election-year"><br>
@@ -30,17 +31,39 @@
 			<button id="deploy-contract" onclick="callDeployContract()">Deploy Contract</button><br>
 		</div>
 		<div id="existing-contract">
-			Contract address: <input type="text" id="contract-address"><br>
+			Contract address: <input type="text" id="contract-address">
 			<button id="use-existing-contract" onclick="useExistingContract()">Use existing contract</button>
 		</div>
 	</div>
 	<div id="second-step">
 		<div id="information"></div>
+		<div id="vote-form">
+			<h3>Vote for a candidate</h3>
+			Number: <input type="number" id="vote-number">
+			<button id="vote" onclick="callVote()">Vote</button><br>
+		</div>
+		<div id="check-vote-form">
+			<h3>Check your vote</h3>
+			<button id="check-vote" onclick="callGetMyVote()">Check my vote</button><br>
+			<div id="my-vote"></div>
+		</div>
 		<div id="add-candidate-form">
+			<h3>Add a candidate</h3>
 			Name: <input type="text" id="candidate-name"><br>
 			Political party: <input type="text" id="political-party"><br>
 			Number: <input type="number" id="candidate-number"><br>
 			<button id="add-candidate" onclick="callAddCandidate()">Add candidate</button><br>
+		</div>
+		<div id="get-candidate-form">
+			<h3>Get a candidate by his number</h3>
+			Number: <input type="number" id="candidate-number-get">
+			<button id="get-candidate" onclick="callGetCandidate()">Get candidate</button><br>
+			<div id="candidate-searched"></div>
+		</div>
+		<div id="get-winner">
+			<h3>Get winner</h3>
+			<button id="get-candidate" onclick="callGetWinner()">Get candidate</button><br>
+			<div id="winner"></div>
 		</div>
 	</div>
 	<h5 id="loading-message" class="text-info"></h5>
