@@ -49,7 +49,7 @@ async function deployContract(politicalOffice, country, year, startTime, endTime
             console.log('Contract deployed with success!');
             console.log('Contract address: ' + newContractInstance._address)
             window.ElectoralVoting = newContractInstance;
-            showInformations();
+            getElectionInformations();
         });
 }
 
@@ -57,7 +57,7 @@ function useExistingContract() {
     var existingContractAddress = document.getElementById("contract-address").value;
     window.ElectoralVoting = new web3.eth.Contract(contractABI, existingContractAddress);
     console.log('Existing ElectoralVoting contract has loaded.');
-    showInformations();
+    getElectionInformations();
 }
 
 async function addCandidate(name, politicalParty, number) {
@@ -76,14 +76,15 @@ async function getElectionInformations() {
     window.ElectoralVoting.methods.getElectionInformations().call({ from: window.account })
         .then(function (result) {
             console.log('Election informations was found with success.');
-            console.log(result);
-            return {
+            var result =  {
                 "responsible": result.responsible_,
                 "politicalOffice": result.politicalOffice_,
                 "country": result.year_,
                 "startTime": epochToDate(result.startTime_),
                 "endTime": epochToDate(result.endTime_),
             };
+            console.log(result);
+            showInformations(result);
         })
         .catch(function (error) {
             handleError('getElectionInformations');
@@ -155,17 +156,16 @@ function handleError(from){
     console.log('There was an error: ' + from);
 }
 
-async function showInformations() {
+function showInformations(info) {
     killFirstStep();
-    var response = await getElectionInformations();
-    changeTitle(response.politicalOffice + "election in " + response.country + " " + response.year);
+    changeTitle(info.politicalOffice + "election in " + info.country + " " + info.year);
 
-    createSpanElement('Responsible address: ' + response.responsible);
-    createSpanElement('Political office: ' + response.politicalOffice);
-    createSpanElement('Country: ' + response.country);
-    createSpanElement('Year: ' + response.year);
-    createSpanElement('Start time: ' + response.startTime);
-    createSpanElement('End time: ' + response.endTime);
+    createSpanElement('Responsible address: ' + info.responsible);
+    createSpanElement('Political office: ' + info.politicalOffice);
+    createSpanElement('Country: ' + info.country);
+    createSpanElement('Year: ' + info.year);
+    createSpanElement('Start time: ' + info.startTime);
+    createSpanElement('End time: ' + info.endTime);
 }
 
 function killFirstStep() {
