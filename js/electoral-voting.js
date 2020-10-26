@@ -80,10 +80,11 @@ function useExistingContract() {
 }
 
 async function addCandidate(name, politicalParty, number) {
-    window.ElectoralVoting.methods.addCandidate(name, politicalParty, number).send()
+    window.ElectoralVoting.methods.addCandidate(name, politicalParty, number)
+        .send({ from: window.web3.eth.defaultAccount })
         .on('receipt', function (receipt) {
             console.log('Candidate added with success.');
-            console.log(receipt); 
+            console.log(receipt);
         })
         .on('error', function (error) { 
             handleError('addCandidate');
@@ -139,7 +140,8 @@ async function getVotesCount(number) {
 }
 
 async function vote(number) {
-    window.ElectoralVoting.methods.vote(number).send()
+    window.ElectoralVoting.methods.vote(number)
+        .send({ from: window.web3.eth.defaultAccount })
         .on('receipt', function (receipt) {
             console.log('Your vote was computed with success.');
             console.log(receipt); 
