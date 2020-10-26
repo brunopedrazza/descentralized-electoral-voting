@@ -32,7 +32,6 @@ function callDeployContract() {
     var endTime = Date.parse(document.getElementById("end-time").value);
 
     deployContract(politicalOffice, country, electionYear, secondsSinceEpoch(startTime), secondsSinceEpoch(endTime));
-    showInformations();
 }
 
 async function deployContract(politicalOffice, country, year, startTime, endTime) {
@@ -50,6 +49,7 @@ async function deployContract(politicalOffice, country, year, startTime, endTime
             console.log('Contract deployed with success!');
             console.log('Contract address: ' + newContractInstance._address)
             window.ElectoralVoting = newContractInstance;
+            showInformations();
         });
 }
 
@@ -155,7 +155,7 @@ function handleError(from){
     console.log('There was an error: ' + from);
 }
 
-function showInformations() {
+async function showInformations() {
     killFirstStep();
     var response = await getElectionInformations();
     changeTitle(response.politicalOffice + "election in " + response.country + " " + response.year);
