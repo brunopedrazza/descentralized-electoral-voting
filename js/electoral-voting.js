@@ -91,16 +91,22 @@ function useExistingContract() {
 }
 
 async function addCandidate(name, politicalParty, number) {
-    window.ElectoralVoting.methods.addCandidate(name, politicalParty, number)
-        .send({ from: window.web3.eth.defaultAccount })
-        .on('receipt', function (receipt) {
-            console.log('Candidate added with success.');
-            console.log(receipt);
-        })
-        .catch(function (error) {
-            logError(error.reason);
-            showErrorReason(error.reason);
-        });
+    try {
+        window.ElectoralVoting.methods.addCandidate(name, politicalParty, number)
+            .send({ from: window.web3.eth.defaultAccount })
+            .on('receipt', function (receipt) {
+                console.log('Candidate added with success.');
+                console.log(receipt);
+            })
+            .catch(function (error) {
+                logError(error.reason);
+                showErrorReason(error.reason);
+            });
+    }
+    catch {
+        logError('addCandidate');
+        showErrorReason('Invalid inputs to add a candidate.');
+    }
 }
 
 async function getElectionInformations() {
