@@ -273,13 +273,12 @@ async function getElectionWinner() {
 }
 
 function callGetMyVote() {
-    var response = getMyVote();
-    if (response) {
+    getMyVote().then(function (response) {
         const message = 'Your vote was returned with success.';
         console.log(message);
         showSuccessMessage(message);
         console.log(response);
-    }
+    });
 }
 
 async function getMyVote() {
