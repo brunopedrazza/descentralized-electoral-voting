@@ -59,16 +59,16 @@ async function deployContract(politicalOffice, country, year, startTime, endTime
     console.log(args);
     contractToBeDeployed.deploy({ data: contractByteCode, arguments: args })
         .send({ from: window.web3.eth.defaultAccount })
-        .catch(function (error) {
-            logError(error.reason);
-            showErrorReason(error.reason);
-        })
         .on('transactionHash', function (transactionHash) { console.log(transactionHash); })
         .then(function (newContractInstance) {
             console.log('Contract deployed with success!');
             console.log('Contract address: ' + newContractInstance._address)
             window.ElectoralVoting = newContractInstance;
             getElectionInformations();
+        })
+        .catch(function (error) {
+            logError(error.reason);
+            showErrorReason(error.reason);
         });
 }
 
