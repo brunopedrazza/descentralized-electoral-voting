@@ -158,13 +158,7 @@ async function getElectionInformations() {
 
 function callGetCandidate() {
     var number = document.getElementById("candidate-number-get").value;
-    var response = getCandidate(number);
-    if (response) {
-        const message = 'Candidate found with success.';
-        console.log(message);
-        showSuccessMessage(message);
-        console.log(response);
-    }
+    getCandidate(number);
 }
 
 async function getCandidate(number) {
@@ -172,11 +166,16 @@ async function getCandidate(number) {
         window.ElectoralVoting.methods.getCandidate(number)
             .call({ from: window.web3.eth.defaultAccount })
             .then(function (result) {
-                return result = {
+                result = {
                     "name": result.name_,
                     "politicalParty": result.politicalParty_,
                     "number": result.number_
                 };
+                const message = 'Candidate found with success.';
+                console.log(message);
+                showSuccessMessage(message);
+                console.log(result);
+                showCandidate("candidate-searched", result);
             })
             .catch(function (error) {
                 logError(error.reason);
@@ -191,11 +190,7 @@ async function getCandidate(number) {
 
 function callGetVotesCount() {
     var number = document.getElementById("candidate-votes-count").value;
-    var response = getVotesCount(number);
-    if (response) {
-        console.log('Number of votes for this candidate:');
-        console.log(response);
-    }
+    getVotesCount(number);
 }
 
 async function getVotesCount(number) {
@@ -203,7 +198,8 @@ async function getVotesCount(number) {
         window.ElectoralVoting.methods.getCandidateVotesCount(number)
             .call({ from: window.web3.eth.defaultAccount })
             .then(function (result) {
-                return result;
+                console.log('Number of votes for this candidate:');
+                console.log(result);
             })
             .catch(function (error) {
                 logError(error.reason);
@@ -247,24 +243,23 @@ async function vote(number) {
 }
 
 function callGetWinner() {
-    var response = getElectionWinner();
-    if (response) {
-        const message = 'The winner was computed with success.';
-        console.log(message);
-        showSuccessMessage(message);
-        console.log(response);
-    }
+    getElectionWinner();
 }
 
 async function getElectionWinner() {
     window.ElectoralVoting.methods.getElectionWinner()
         .call({ from: window.web3.eth.defaultAccount })
         .then(function (result) {
-            return result = {
+            result = {
                 "name": result.name_,
                 "politicalParty": result.politicalParty_,
                 "number": result.number_
             };
+            const message = 'The winner was computed with success.';
+            console.log(message);
+            showSuccessMessage(message);
+            console.log(result);
+            showCandidate("winner", result);
         })
         .catch(function (error) {
             logError(error.reason);
@@ -273,12 +268,7 @@ async function getElectionWinner() {
 }
 
 function callGetMyVote() {
-    getMyVote().then(function (response) {
-        const message = 'Your vote was returned with success.';
-        console.log(message);
-        showSuccessMessage(message);
-        console.log(response);
-    });
+    getMyVote();
 }
 
 async function getMyVote() {
@@ -290,7 +280,11 @@ async function getMyVote() {
                 "politicalParty": result.politicalParty_,
                 "number": result.number_
             };
-            return result;
+            const message = 'Your vote was returned with success.';
+            console.log(message);
+            showSuccessMessage(message);
+            console.log(result);
+            showCandidate("my-vote", result);
         })
         .catch(function (error) {
             logError(error.reason);
@@ -350,12 +344,23 @@ function showInformations() {
 
     changeTitle(info.politicalOffice + " election in " + info.country + " " + info.year);
 
-    createSpanElement('Responsible address: ' + info.responsible);
-    createSpanElement('Political office: ' + info.politicalOffice);
-    createSpanElement('Country: ' + info.country);
-    createSpanElement('Year: ' + info.year);
-    createSpanElement('Start time: ' + info.startTime);
-    createSpanElement('End time: ' + info.endTime);
+    createSpanElement('Responsible address: ' + info.responsible, "information");
+    createSpanElement('Political office: ' + info.politicalOffice, "information");
+    createSpanElement('Country: ' + info.country, "information");
+    createSpanElement('Year: ' + info.year, "information");
+    createSpanElement('Start time: ' + info.startTime, "information");
+    createSpanElement('End time: ' + info.endTime, "information");
+}
+
+function showCandidate(elementId, candidate) {
+    var candidateDiv = document.getElementById(elementId);
+    while (candidateDiv.firstChild) {
+        candidateDiv.removeChild(candidateDiv.lastChild);
+    }
+
+    createSpanElement('Name: ' + candidate.name, elementId);
+    createSpanElement('Political party: ' + candidate.politicalParty, elementId);
+    createSpanElement('Number: ' + candidate.number, elementId);
 }
 
 function showOrNotAddCandidate() {
@@ -409,14 +414,14 @@ function showAddCandidate() {
     addCandidate.style.display = "block";
 }
 
-function createSpanElement(text) {
+function createSpanElement(text, elementId) {
     var brElement = document.createElement("BR");
-    var information = document.getElementById("information");
+    var element = document.getElementById(elementId);
     var spanElement = document.createElement("SPAN");
     var textElement = document.createTextNode(text);
     spanElement.appendChild(textElement);
-    information.appendChild(spanElement);
-    information.appendChild(brElement);
+    element.appendChild(spanElement);
+    element.appendChild(brElement);
 }
 
 function changeTitle(text) {
