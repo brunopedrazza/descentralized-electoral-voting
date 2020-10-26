@@ -34,7 +34,7 @@
 						<label for="contract">Contract address</label>
 						<input type="text" class="form-control" id="contract-address">
 					</div>
-					<button class="btn btn-primary btn-lg btn-block" id="use-existing-contract"
+					<button class="btn btn-primary btn-lg btn-block" id="use-existing-contract" type="button"
 						onclick="useExistingContract()">
 						Use existing contract
 					</button>
@@ -69,7 +69,8 @@
 						<input type="datetime-local" class="form-control" id="start-time">
 					</div>
 
-					<button class="btn btn-primary btn-lg btn-block" id="deploy-contract" type="button">
+					<button class="btn btn-primary btn-lg btn-block" id="deploy-contract" type="button"
+						onclick="callDeployContract()">
 						Deploy contract
 					</button>
 				</form>
