@@ -52,7 +52,8 @@ async function deployContract(politicalOffice, country, year, startTime, endTime
     contractToBeDeployed.defaultAccount = window.web3.eth.defaultAccount;
     console.log("Deploying contract with these arguments:");
     console.log(args);
-    contractToBeDeployed.deploy({ data: contractByteCode, arguments: args }).send({  })
+    contractToBeDeployed.deploy({ data: contractByteCode, arguments: args })
+        .send({ from: window.web3.eth.defaultAccount })
         .on('error', function (error) {
             handleError('deployContract');
             console.log(error); 
