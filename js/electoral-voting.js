@@ -182,7 +182,9 @@ function showInformations(info) {
 
 function killFirstStep() {
     var firstStep = document.getElementById("first-step");
-    firstStep.remove();
+    if (firstStep) {
+        firstStep.remove();
+    }
 }
 
 function killAddCandidate() {
