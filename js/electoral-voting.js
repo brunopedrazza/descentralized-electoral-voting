@@ -176,14 +176,14 @@ function killFirstStep() {
 function createSpanElement(text) {
     var information = document.getElementById("information");
     var spanElement = document.createElement("SPAN");
-    var textElement = document.createTextNode(text);
+    var textElement = document.createTextNode(text + "\n");
     spanElement.appendChild(textElement);
     information.appendChild(spanElement);
 }
 
 function changeTitle(text) {
     var title = document.getElementById("title");
-    title.innerHTML = "Deploying the contract...";
+    title.innerHTML = text;
 } 
 
 function secondsSinceEpoch(date) {  
@@ -191,6 +191,6 @@ function secondsSinceEpoch(date) {
 }
 
 function epochToDate(seconds) {
-    var d = new Date(0);
-    return d.setUTCSeconds(seconds);
+    var date = new Date(seconds * 1000);
+    return date;
 }
