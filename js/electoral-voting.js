@@ -110,8 +110,7 @@ async function getElectionInformations() {
             changeResponsibleMessage();
         })
         .catch(function (error) {
-            handleError('getElectionInformations');
-            console.log(error); 
+            handleError(error.reason);
         });
 }
 
@@ -122,8 +121,7 @@ async function getCandidate(number) {
             console.log(result);
         })
         .catch(function (error) {
-            handleError('getCandidate');
-            console.log(error); 
+            handleError(error.reason);
         });
 }
 
@@ -134,8 +132,7 @@ async function getVotesCount(number) {
             console.log(result); 
         })
         .catch(function (error) {
-            handleError('getVotesCount');
-            console.log(error); 
+            handleError(error.reason);
         });
 }
 
@@ -170,8 +167,7 @@ async function getMyVote() {
             console.log(result); 
         })
         .catch(function (error) {
-            handleError('getMyVote'); 
-            console.log(error); 
+            handleError(error.reason);
         });
 }
 
