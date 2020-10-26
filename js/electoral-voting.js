@@ -159,8 +159,7 @@ async function getElectionWinner() {
             console.log(result); 
         })
         .catch(function (error) { 
-            handleError('getElectionWinner');
-            console.log(error); 
+            handleError(error.reason);
         });
 }
 
