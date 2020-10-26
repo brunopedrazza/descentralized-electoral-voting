@@ -13,22 +13,37 @@ const ethEnabled = () => {
 }
 
 if (!ethEnabled()) {
-    alert("Metamask or browser with Ethereum not detected!");
+    const message = "Metamask or browser with Ethereum not detected!";
+    alert(message);
+    changeTitle(message);
+    hideFirstStep();
 }
 
 else {
-    contractToBeDeployed = new web3.eth.Contract(contractABI);
-    var accountInterval = setInterval(function () {
-        web3.eth.getAccounts().then(accounts => window.account = accounts[0]);
+    contractToBeDeployed = new window.web3.eth.Contract(contractABI);
+    window.ethereum.on('accountsChanged', function (accounts) {
+        window.web3.eth.defaultAccount = accounts[0];
+        console.log("Account changed to address: " + accounts[0])
         if (window.responsible) {
-            if (window.account != window.responsible) {
-                killAddCandidate();
+            if (window.web3.eth.defaultAccount != window.responsible) {
+                hideAddCandidate();
             }
             else {
                 createAddCandidate();
             }
         }
-    }, 1000);
+    })
+    // var accountInterval = setInterval(function () {
+    //     web3.eth.getAccounts().then(accounts => window.account = accounts[0]);
+    //     if (window.responsible) {
+    //         if (window.account != window.responsible) {
+    //             hideAddCandidate();
+    //         }
+    //         else {
+    //             createAddCandidate();
+    //         }
+    //     }
+    // }, 1000);
 }
 
 function callDeployContract() {
@@ -47,8 +62,7 @@ async function deployContract(politicalOffice, country, year, startTime, endTime
     var args = [politicalOffice, country, year, startTime, endTime];
     console.log("Deploying contract with these arguments:");
     console.log(args);
-    contractToBeDeployed.deploy({ data: contractByteCode, arguments: args })
-        .send({ from: window.account })
+    contractToBeDeployed.deploy({ data: contractByteCode, arguments: args }).send()
         .on('error', function (error) {
             handleError('deployContract');
             console.log(error); 
@@ -64,13 +78,13 @@ async function deployContract(politicalOffice, country, year, startTime, endTime
 
 function useExistingContract() {
     var existingContractAddress = document.getElementById("contract-address").value;
-    window.ElectoralVoting = new web3.eth.Contract(contractABI, existingContractAddress);
+    window.ElectoralVoting = new window.web3.eth.Contract(contractABI, existingContractAddress);
     console.log('Existing ElectoralVoting contract has loaded.');
     getElectionInformations();
 }
 
 async function addCandidate(name, politicalParty, number) {
-    window.ElectoralVoting.methods.addCandidate(name, politicalParty, number).send({ from: window.account })
+    window.ElectoralVoting.methods.addCandidate(name, politicalParty, number).send()
         .on('receipt', function (receipt) {
             console.log('Candidate added with success.');
             console.log(receipt); 
@@ -82,7 +96,7 @@ async function addCandidate(name, politicalParty, number) {
 }
 
 async function getElectionInformations() {
-    window.ElectoralVoting.methods.getElectionInformations().call({ from: window.account })
+    window.ElectoralVoting.methods.getElectionInformations().call()
         .then(function (result) {
             console.log('Election informations was found with success.');
             var result =  {
@@ -104,7 +118,7 @@ async function getElectionInformations() {
 }
 
 async function getCandidate(number) {
-    window.ElectoralVoting.methods.getCandidate(number).call({ from: window.account })
+    window.ElectoralVoting.methods.getCandidate(number).call()
         .then(function (result) {
             console.log('Candidate found with success.');
             console.log(result);
@@ -116,7 +130,7 @@ async function getCandidate(number) {
 }
 
 async function getVotesCount(number) {
-    window.ElectoralVoting.methods.getCandidateVotesCount(number).call({ from: window.account })
+    window.ElectoralVoting.methods.getCandidateVotesCount(number).call()
         .then(function (result) {
             console.log('Number of votes for this candidate:');
             console.log(result); 
@@ -128,7 +142,7 @@ async function getVotesCount(number) {
 }
 
 async function vote(number) {
-    window.ElectoralVoting.methods.vote(number).send({ from: window.account })
+    window.ElectoralVoting.methods.vote(number).send()
         .on('receipt', function (receipt) {
             console.log('Your vote was computed with success.');
             console.log(receipt); 
@@ -140,7 +154,7 @@ async function vote(number) {
 }
 
 async function getElectionWinner() {
-    window.ElectoralVoting.methods.getElectionWinner().call({ from: window.account })
+    window.ElectoralVoting.methods.getElectionWinner().call()
         .then(function (result) {
             console.log('The winner was computed with success.');
             console.log(result); 
@@ -152,7 +166,7 @@ async function getElectionWinner() {
 }
 
 async function getMyVote() {
-    window.ElectoralVoting.methods.getMyVote().call({ from: window.account })
+    window.ElectoralVoting.methods.getMyVote().call()
         .then(function (result) {
             console.log('Your vote was returned with success.'); 
             console.log(result); 
@@ -168,7 +182,7 @@ function handleError(from){
 }
 
 function showInformations(info) {
-    killFirstStep();
+    hideFirstStep();
     changeTitle(info.politicalOffice + " election in " + info.country + " " + info.year);
 
     createSpanElement('Responsible address: ' + info.responsible);
@@ -179,14 +193,12 @@ function showInformations(info) {
     createSpanElement('End time: ' + info.endTime);
 }
 
-function killFirstStep() {
+function hideFirstStep() {
     var firstStep = document.getElementById("first-step");
-    if (firstStep) {
-        firstStep.remove();
-    }
+    firstStep.style.display = "none";
 }
 
-function killAddCandidate() {
+function hideAddCandidate() {
     var addCandidate = document.getElementById("add-candidate");
     if (addCandidate){
         addCandidate.remove();
