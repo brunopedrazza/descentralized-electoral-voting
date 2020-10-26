@@ -1,3 +1,12 @@
+const { title } = require("process");
+
+var title;
+
+onload = function() {
+    title = document.getElementById("title");
+    title.value = "Testando";
+}
+
 const contractABI = electoralVotingMetadata.output.abi;
 const contractByteCode = electoralVotingDeploy.data.bytecode.object;
 
@@ -21,6 +30,10 @@ else {
     var accountInterval = setInterval(function () {
         web3.eth.getAccounts().then(accounts => window.account = accounts[0]);
     }, 1000);
+}
+
+function callDeployContract() {
+    title.value = "Deploy ai.";
 }
 
 async function deployContract(politicalOffice, country, year, startTime, endTime) {
