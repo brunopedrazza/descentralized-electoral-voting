@@ -33,8 +33,7 @@ else {
         changeCurrentAddress(accounts[0]);
         if (window.responsible) {
             window.isResponsible = window.web3.eth.defaultAccount == window.responsible;
-            if (window.isResponsible) createAddCandidate();
-            else hideAddCandidate();
+            showOrNotAddCandidate();
             changeResponsibleMessage();
         }
     })
@@ -145,9 +144,10 @@ async function getElectionInformations() {
                 "endTime": epochToDate(result.endTime_),
             };
             console.log(result);
+            window.votingInformation = result;
             window.responsible = result.responsible;
             window.isResponsible = result.responsible == window.web3.eth.defaultAccount;
-            showInformations(result);
+            showInformations();
             changeResponsibleMessage();
         })
         .catch(function (error) {
@@ -289,9 +289,14 @@ function hideLoadingMessage() {
     loadingMessage.innerHTML = "";
 }
 
-function showInformations(info) {
+function showInformations() {
+    var info = window.votingInformation;
+
     hideFirstStep();
     showSecondStep();
+
+    showOrNotAddCandidate();
+
     changeTitle(info.politicalOffice + " election in " + info.country + " " + info.year);
 
     createSpanElement('Responsible address: ' + info.responsible);
@@ -302,13 +307,18 @@ function showInformations(info) {
     createSpanElement('End time: ' + info.endTime);
 }
 
+function showOrNotAddCandidate() {
+    if (window.isResponsible) showAddCandidate();
+    else hideAddCandidate();
+}
+
 function hideFirstStep() {
     var firstStep = document.getElementById("first-step");
     firstStep.style.display = "none";
 }
 
 function hideAddCandidate() {
-    var addCandidate = document.getElementById("add-candidate");
+    var addCandidate = document.getElementById("add-candidate-form");
     addCandidate.style.display = "none";
 }
 
@@ -328,52 +338,8 @@ function showFirstStep() {
 }
 
 function showAddCandidate() {
-    var addCandidate = document.getElementById("add-candidate");
+    var addCandidate = document.getElementById("add-candidate-form");
     addCandidate.style.display = "block";
-}
-
-function createAddCandidate() {
-    var addCandidate = document.getElementById("add-candidate");
-    if (addCandidate) return;
-    var firstStep = document.getElementById("first-step");
-    if (firstStep) return;
-
-    var secondStep = document.getElementById("second-step");
-    var addCandidate = document.createElement("DIV");
-    addCandidate.setAttribute("id", "add-candidate");
-
-    var more = document.createElement("BUTTON");
-    more.innerHTML = "Add more";
-    more.addEventListener("click", createCandidateInput);
-
-    addCandidate.appendChild(more);
-
-    var brElement = document.createElement("BR");
-    addCandidate.appendChild(brElement);
-
-    secondStep.appendChild(addCandidate);
-
-    createCandidateInput();
-
-}
-
-function createCandidateInput() {
-    var addCandidate = document.getElementById("add-candidate");
-
-    var inputName = document.createElement("input");
-    inputName.type = "text";
-    addCandidate.appendChild(inputName);
-
-    var inputPoliticalParty = document.createElement("input");
-    inputPoliticalParty.type = "text";
-    addCandidate.appendChild(inputPoliticalParty);
-
-    var inputNumber = document.createElement("input");
-    inputNumber.type = "number";
-    addCandidate.appendChild(inputNumber);
-
-    var brElement = document.createElement("BR");
-    addCandidate.appendChild(brElement);
 }
 
 function createSpanElement(text) {
