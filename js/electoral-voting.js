@@ -6,7 +6,7 @@ var contractToBeDeployed;
 const ethEnabled = () => {
     if (window.ethereum) {
         window.web3 = new Web3(Web3.givenProvider || "ws://localhost:8545");
-        window.web3.handleRevert = true;
+        window.web3.eth.handleRevert = true;
         return true;
     }
     return false;
@@ -21,6 +21,11 @@ if (!ethEnabled()) {
 
 else {
     contractToBeDeployed = new window.web3.eth.Contract(contractABI);
+    window.web3.eth.getAccounts().then(function (accounts) {
+        window.web3.eth.defaultAccount = accounts[0];
+        changeCurrentAddress(accounts[0]);
+        console.log("Current account: " + accounts[0]);
+    });
     window.ethereum.on('accountsChanged', function (accounts) {
         window.web3.eth.defaultAccount = accounts[0];
         console.log("Account changed to address: " + accounts[0]);
