@@ -232,10 +232,13 @@ function logError(message) {
     console.log('There was an error: ' + message);
 }
 
+var timeoutError;
+
 function showErrorReason(reason) {
+    clearTimeout(timeoutError);
     var errorMessage = document.getElementById('error-message');
     errorMessage.innerHTML = reason;
-    setTimeout(hideErrorReason, 10000);
+    timeoutError = setTimeout(hideErrorReason, 10000);
 }
 
 function hideErrorReason() {
@@ -243,10 +246,13 @@ function hideErrorReason() {
     errorMessage.innerHTML = "";
 }
 
+var timeoutSuccess;
+
 function showSuccessMessage(message) {
+    clearTimeout(timeoutSuccess);
     var successMessage = document.getElementById('success-message');
     successMessage.innerHTML = message;
-    setTimeout(hideSuccessMessage, 10000);
+    timeoutSuccess = setTimeout(hideSuccessMessage, 10000);
 }
 
 function hideSuccessMessage() {
