@@ -62,7 +62,8 @@ async function deployContract(politicalOffice, country, year, startTime, endTime
         contractToBeDeployed.deploy({ data: contractByteCode, arguments: args })
             .send({ from: window.web3.eth.defaultAccount })
             .on('transactionHash', function (transactionHash) { console.log(transactionHash); })
-            .on('error', function () {
+            .on('error', function (error) {
+                if (error.code == 4001) error.reason = 'Transaction was rejected by you.'
                 logError('deployContract');
                 hideLoadingMessage();
                 showErrorReason('Unknown error while trying to deploy the contract.');
@@ -118,6 +119,7 @@ async function addCandidate(name, politicalParty, number) {
                 console.log(receipt);
             })
             .catch(function (error) {
+                if (error.code == 4001) error.reason = 'Transaction was rejected by you.'
                 hideLoadingMessage();
                 logError(error.reason);
                 showErrorReason(error.reason);
@@ -230,6 +232,7 @@ async function vote(number) {
                 console.log(receipt);
             })
             .catch(function (error) {
+                if (error.code == 4001) error.reason = 'Transaction was rejected by you.'
                 logError(error.reason);
                 hideLoadingMessage();
                 showErrorReason(error.reason);
