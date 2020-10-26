@@ -71,6 +71,18 @@ async function addCandidate(name, politicalParty, number) {
         });
 }
 
+async function getElectionInformations() {
+    window.ElectoralVoting.methods.getElectionInformations().call({ from: window.account })
+        .then(function (result) {
+            console.log('Election informations was found with success.');
+            console.log(result); 
+        })
+        .catch(function (error) {
+            handleError('getElectionInformations');
+            console.log(error); 
+        });
+}
+
 async function getCandidate(number) {
     window.ElectoralVoting.methods.getCandidate(number).call({ from: window.account })
         .then(function (result) {
