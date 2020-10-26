@@ -80,6 +80,46 @@
 			</div>
 		</div>
 
+		<div id="second-step">
+			<div id="information"></div>
+			<div id="voters-view">
+				<div id="vote-form">
+					<h3>Vote for a candidate</h3>
+					Number: <input type="number" id="vote-number">
+					<button id="vote" onclick="callVote()">Vote</button><br>
+				</div>
+				<div id="check-vote-form">
+					<h3>Check your vote</h3>
+					<button id="check-vote" onclick="callGetMyVote()">Check my vote</button><br>
+					<div id="my-vote"></div>
+				</div>
+			</div>
+			<div id="add-candidate-form">
+				<h3>Add a candidate</h3>
+				Name: <input type="text" id="candidate-name"><br>
+				Political party: <input type="text" id="political-party"><br>
+				Number: <input type="number" id="candidate-number"><br>
+				<button id="add-candidate" onclick="callAddCandidate()">Add candidate</button><br>
+			</div>
+			<div id="get-candidate-form">
+				<h3>Get a candidate by his number</h3>
+				Number: <input type="number" id="candidate-number-get">
+				<button id="get-candidate" onclick="callGetCandidate()">Get candidate</button><br>
+				<div id="candidate-searched"></div>
+			</div>
+			<div id="get-votes-count-form">
+				<h3>Get votes count</h3>
+				Number: <input type="number" id="candidate-votes-count">
+				<button id="get-votes-count" onclick="callGetVotesCount()">Get votes count</button><br>
+				<div id="vote-count"></div>
+			</div>
+			<div id="get-winner">
+				<h3>Get election's winner</h3>
+				<button id="get-candidate" onclick="callGetWinner()">Get winner</button><br>
+				<div id="winner"></div>
+			</div>
+		</div>
+
 		<footer class="my-5 pt-5 text-muted text-center text-small">
 			<p class="mb-1">&copy; 2017-2018 Company Name</p>
 			<ul class="list-inline">
