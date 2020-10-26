@@ -286,11 +286,12 @@ async function getMyVote() {
     window.ElectoralVoting.methods.getMyVote()
         .call({ from: window.web3.eth.defaultAccount })
         .then(function (result) {
-            return result = {
+            result = {
                 "name": result.name_,
                 "politicalParty": result.politicalParty_,
                 "number": result.number_
             };
+            return result;
         })
         .catch(function (error) {
             logError(error.reason);
