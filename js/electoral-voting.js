@@ -142,7 +142,7 @@ async function getElectionInformations() {
                 "country": result.country_,
                 "year": result.year_,
                 "startTime": epochToDate(result.startTime_),
-                "endTime": epochToDate(result.endTime_),
+                "endTime": epochToDate(result.endTime_)
             };
             console.log(result);
             window.votingInformation = result;
@@ -260,6 +260,13 @@ async function getElectionWinner() {
         });
 }
 
+function callGetMyVote() {
+    var response = getMyVote();
+    if (response) {
+        console.log('call get my vote' + response);
+    }
+}
+
 async function getMyVote() {
     window.ElectoralVoting.methods.getMyVote()
         .call({ from: window.web3.eth.defaultAccount })
@@ -267,7 +274,13 @@ async function getMyVote() {
             const message = 'Your vote was returned with success.';
             console.log(message);
             showSuccessMessage(message);
+            result = {
+                "name": result.name_,
+                "politicalParty": result.politicalParty_,
+                "number": result.number_
+            };
             console.log(result);
+            return result;
         })
         .catch(function (error) {
             logError(error.reason);
