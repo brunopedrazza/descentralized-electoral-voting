@@ -100,13 +100,11 @@ function useExistingContract() {
 function callAddCandidate() {
     showLoadingMessage("Adding candidate...");
 
-    var politicalOffice = document.getElementById("political-office").value;
-    var country = document.getElementById("country").value;
-    var electionYear = document.getElementById("election-year").value;
-    var startTime = Date.parse(document.getElementById("start-time").value);
-    var endTime = Date.parse(document.getElementById("end-time").value);
+    var name = document.getElementById("candidate-name").value;
+    var politicalParty = document.getElementById("political-party").value;
+    var candidateNumber = document.getElementById("candidate-number").value;
 
-    add(politicalOffice, country, electionYear, secondsSinceEpoch(startTime), secondsSinceEpoch(endTime));
+    addCandidate(name, politicalParty, candidateNumber);
 }
 
 async function addCandidate(name, politicalParty, number) {
