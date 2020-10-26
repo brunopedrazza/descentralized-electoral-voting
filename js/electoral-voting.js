@@ -26,7 +26,7 @@ else {
 async function deployContract(politicalOffice, country, year, startTime, endTime) {
     var args = [politicalOffice, country, year, startTime, endTime];
     contractToBeDeployed.deploy({ data: contractByteCode, arguments: args })
-        .send({ from: window.account, gas: 3000000, gasPrice: '1000000000' })
+        .send({ from: window.account })
         .on('error', function (error) { console.log(error); })
         .on('transactionHash', function (transactionHash) { console.log(transactionHash); })
         .then(function (newContractInstance) {
