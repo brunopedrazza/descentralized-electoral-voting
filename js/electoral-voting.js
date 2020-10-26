@@ -22,11 +22,10 @@ else {
         web3.eth.getAccounts().then(accounts => window.account = accounts[0]);
         if (window.responsible) {
             if (window.account != window.responsible) {
-                console.log("is not responsible");
                 killAddCandidate();
             }
             else {
-                console.log("is responsible")
+                createAddCandidate();
             }
         }
     }, 1000);
@@ -192,6 +191,50 @@ function killAddCandidate() {
     if (addCandidate){
         addCandidate.remove();
     }
+}
+
+function createAddCandidate() {
+    var addCandidate = document.getElementById("add-candidate");
+    if (addCandidate) return;
+    var firstStep = document.getElementById("first-step");
+    if (firstStep) return;
+
+    var secondStep = document.getElementById("second-step");
+    var addCandidate = document.createElement("DIV");
+    addCandidate.setAttribute("id", "add-candidate");
+
+    var more = document.createElement("BUTTON");
+    more.innerHTML = "Add more";
+    more.addEventListener("click", createCandidateInput);
+
+    addCandidate.appendChild(more);
+
+    var brElement = document.createElement("BR");
+    addCandidate.appendChild(brElement);
+
+    secondStep.appendChild(addCandidate);
+
+    createCandidateInput();
+
+}
+
+function createCandidateInput() {
+    var addCandidate = document.getElementById("add-candidate");
+
+    var inputName = document.createElement("input");
+    inputName.type = "text";
+    addCandidate.appendChild(inputName);
+
+    var inputPoliticalParty = document.createElement("input");
+    inputPoliticalParty.type = "text";
+    addCandidate.appendChild(inputPoliticalParty);
+
+    var inputNumber = document.createElement("input");
+    inputNumber.type = "number";
+    addCandidate.appendChild(inputNumber);
+
+    var brElement = document.createElement("BR");
+    addCandidate.appendChild(brElement);
 }
 
 function createSpanElement(text) {
