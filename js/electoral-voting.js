@@ -79,7 +79,8 @@ async function getElectionInformations() {
             var result =  {
                 "responsible": result.responsible_,
                 "politicalOffice": result.politicalOffice_,
-                "country": result.year_,
+                "country": result.country_,
+                "year": result.year_,
                 "startTime": epochToDate(result.startTime_),
                 "endTime": epochToDate(result.endTime_),
             };
@@ -158,7 +159,7 @@ function handleError(from){
 
 function showInformations(info) {
     killFirstStep();
-    changeTitle(info.politicalOffice + "election in " + info.country + " " + info.year);
+    changeTitle(info.politicalOffice + " election in " + info.country + " " + info.year);
 
     createSpanElement('Responsible address: ' + info.responsible);
     createSpanElement('Political office: ' + info.politicalOffice);
@@ -176,7 +177,7 @@ function killFirstStep() {
 function createSpanElement(text) {
     var information = document.getElementById("information");
     var spanElement = document.createElement("SPAN");
-    var textElement = document.createTextNode(text + "\n");
+    var textElement = document.createTextNode(text);
     spanElement.appendChild(textElement);
     information.appendChild(spanElement);
 }
