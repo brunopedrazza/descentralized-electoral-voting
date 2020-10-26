@@ -57,19 +57,25 @@ async function deployContract(politicalOffice, country, year, startTime, endTime
     contractToBeDeployed.defaultAccount = window.web3.eth.defaultAccount;
     console.log("Deploying contract with these arguments:");
     console.log(args);
-    contractToBeDeployed.deploy({ data: contractByteCode, arguments: args })
-        .send({ from: window.web3.eth.defaultAccount })
-        .on('error', function (error) {
-            logError('deployContract');
-            showErrorReason('Unknown while trying to deploy the contract.');
-        })
-        .on('transactionHash', function (transactionHash) { console.log(transactionHash); })
-        .then(function (newContractInstance) {
-            console.log('Contract deployed with success!');
-            console.log('Contract address: ' + newContractInstance._address)
-            window.ElectoralVoting = newContractInstance;
-            getElectionInformations();
-        });
+    try {
+        contractToBeDeployed.deploy({ data: contractByteCode, arguments: args })
+            .send({ from: window.web3.eth.defaultAccount })
+            .on('error', function (error) {
+                logError('deployContract');
+                showErrorReason('Unknown error while trying to deploy the contract.');
+            })
+            .on('transactionHash', function (transactionHash) { console.log(transactionHash); })
+            .then(function (newContractInstance) {
+                console.log('Contract deployed with success!');
+                console.log('Contract address: ' + newContractInstance._address)
+                window.ElectoralVoting = newContractInstance;
+                getElectionInformations();
+            });
+    }
+    catch {
+        logError('deployContract');
+        showErrorReason('Invalid inputs to deploy the contract.');
+    }
 }
 
 function useExistingContract() {
@@ -85,16 +91,22 @@ function useExistingContract() {
 }
 
 async function addCandidate(name, politicalParty, number) {
-    window.ElectoralVoting.methods.addCandidate(name, politicalParty, number)
-        .send({ from: window.web3.eth.defaultAccount })
-        .on('receipt', function (receipt) {
-            console.log('Candidate added with success.');
-            console.log(receipt);
-        })
-        .on('error', function (error) { 
-            logError('addCandidate');
-            showErrorReason('Unknown while trying to add a candidate.');
-        });
+    try {
+        window.ElectoralVoting.methods.addCandidate(name, politicalParty, number)
+            .send({ from: window.web3.eth.defaultAccount })
+            .on('receipt', function (receipt) {
+                console.log('Candidate added with success.');
+                console.log(receipt);
+            })
+            .on('error', function (error) {
+                logError('addCandidate');
+                showErrorReason('Unknown while trying to add a candidate.');
+            });
+    }
+    catch {
+        logError('addCandidate');
+        showErrorReason('Invalid inputs to add a candidate.');
+    }
 }
 
 async function getElectionInformations() {
@@ -154,6 +166,9 @@ async function vote(number) {
         .on('error', function (error) {
             logError('vote');
             showErrorReason('Unknown while trying to vote.');
+        }).catch(function (error) {
+            logError(error.reason);
+            showErrorReason(error.reason);
         });
 }
 
