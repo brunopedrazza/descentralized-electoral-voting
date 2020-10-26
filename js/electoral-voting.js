@@ -60,8 +60,8 @@ async function deployContract(politicalOffice, country, year, startTime, endTime
     contractToBeDeployed.deploy({ data: contractByteCode, arguments: args })
         .send({ from: window.web3.eth.defaultAccount })
         .on('error', function (error) {
-            handleError('deployContract');
-            console.log(error); 
+            logError('deployContract');
+            showErrorReason('Unknown while trying to deploy the contract.');
         })
         .on('transactionHash', function (transactionHash) { console.log(transactionHash); })
         .then(function (newContractInstance) {
@@ -74,9 +74,14 @@ async function deployContract(politicalOffice, country, year, startTime, endTime
 
 function useExistingContract() {
     var existingContractAddress = document.getElementById("contract-address").value;
-    window.ElectoralVoting = new window.web3.eth.Contract(contractABI, existingContractAddress);
-    console.log('Existing ElectoralVoting contract has loaded.');
-    getElectionInformations();
+    try {
+        window.ElectoralVoting = new window.web3.eth.Contract(contractABI, existingContractAddress);
+        console.log('Existing ElectoralVoting contract has loaded.');
+        getElectionInformations();
+    }
+    catch {
+        showErrorReason('A contract with this address was not found.');
+    }
 }
 
 async function addCandidate(name, politicalParty, number) {
@@ -87,8 +92,8 @@ async function addCandidate(name, politicalParty, number) {
             console.log(receipt);
         })
         .on('error', function (error) { 
-            handleError('addCandidate');
-            console.log(error); 
+            logError('addCandidate');
+            showErrorReason('Unknown while trying to add a candidate.');
         });
 }
 
@@ -110,7 +115,8 @@ async function getElectionInformations() {
             changeResponsibleMessage();
         })
         .catch(function (error) {
-            handleError(error.reason);
+            logError(error.reason);
+            showErrorReason(error.reason);
         });
 }
 
@@ -121,7 +127,8 @@ async function getCandidate(number) {
             console.log(result);
         })
         .catch(function (error) {
-            handleError(error.reason);
+            logError(error.reason);
+            showErrorReason(error.reason);
         });
 }
 
@@ -132,7 +139,8 @@ async function getVotesCount(number) {
             console.log(result); 
         })
         .catch(function (error) {
-            handleError(error.reason);
+            logError(error.reason);
+            showErrorReason(error.reason);
         });
 }
 
@@ -144,8 +152,8 @@ async function vote(number) {
             console.log(receipt); 
         })
         .on('error', function (error) {
-            handleError('vote');
-            console.log(error); 
+            logError('vote');
+            showErrorReason('Unknown while trying to vote.');
         });
 }
 
@@ -156,7 +164,8 @@ async function getElectionWinner() {
             console.log(result); 
         })
         .catch(function (error) { 
-            handleError(error.reason);
+            logError(error.reason);
+            showErrorReason(error.reason);
         });
 }
 
@@ -167,12 +176,24 @@ async function getMyVote() {
             console.log(result); 
         })
         .catch(function (error) {
-            handleError(error.reason);
+            logError(error.reason);
+            showErrorReason(error.reason);
         });
 }
 
-function handleError(from){
-    console.log('There was an error: ' + from);
+function logError(message){
+    console.log('There was an error: ' + message);
+}
+
+function showErrorReason(reason){
+    var errorMessage = document.getElementById('error-message');
+    errorMessage.innerHTML = reason;
+    setTimeout(hideErrorReason,7000);
+}
+
+function hideErrorReason(){
+    var errorMessage = document.getElementById('error-message');
+    errorMessage.innerHTML = "";
 }
 
 function showInformations(info) {
