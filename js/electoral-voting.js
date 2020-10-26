@@ -158,7 +158,13 @@ async function getElectionInformations() {
 
 function callGetCandidate() {
     var number = document.getElementById("candidate-number-get").value;
-    getCandidate(number);
+    var response = getCandidate(number);
+    if (response) {
+        const message = 'Candidate found with success.';
+        console.log(message);
+        showSuccessMessage(message);
+        console.log(response);
+    }
 }
 
 async function getCandidate(number) {
@@ -166,10 +172,11 @@ async function getCandidate(number) {
         window.ElectoralVoting.methods.getCandidate(number)
             .call({ from: window.web3.eth.defaultAccount })
             .then(function (result) {
-                const message = 'Candidate found with success.';
-                console.log(message);
-                showSuccessMessage(message);
-                console.log(result);
+                return result = {
+                    "name": result.name_,
+                    "politicalParty": result.politicalParty_,
+                    "number": result.number_
+                };
             })
             .catch(function (error) {
                 logError(error.reason);
@@ -182,13 +189,21 @@ async function getCandidate(number) {
     }
 }
 
+function callGetVotesCount() {
+    var number = document.getElementById("candidate-votes-count").value;
+    var response = getVotesCount(number);
+    if (response) {
+        console.log('Number of votes for this candidate:');
+        console.log(response);
+    }
+}
+
 async function getVotesCount(number) {
     try {
         window.ElectoralVoting.methods.getCandidateVotesCount(number)
             .call({ from: window.web3.eth.defaultAccount })
             .then(function (result) {
-                console.log('Number of votes for this candidate:');
-                console.log(result);
+                return result;
             })
             .catch(function (error) {
                 logError(error.reason);
@@ -234,7 +249,10 @@ async function vote(number) {
 function callGetWinner() {
     var response = getElectionWinner();
     if (response) {
-        console.log('call get winner result' + response);
+        const message = 'The winner was computed with success.';
+        console.log(message);
+        showSuccessMessage(message);
+        console.log(response);
     }
 }
 
@@ -242,16 +260,11 @@ async function getElectionWinner() {
     window.ElectoralVoting.methods.getElectionWinner()
         .call({ from: window.web3.eth.defaultAccount })
         .then(function (result) {
-            const message = 'The winner was computed with success.';
-            console.log(message);
-            showSuccessMessage(message);
-            result = {
+            return result = {
                 "name": result.name_,
                 "politicalParty": result.politicalParty_,
                 "number": result.number_
             };
-            console.log(result);
-            return result;
         })
         .catch(function (error) {
             logError(error.reason);
@@ -262,7 +275,10 @@ async function getElectionWinner() {
 function callGetMyVote() {
     var response = getMyVote();
     if (response) {
-        console.log('call get my vote' + response);
+        const message = 'Your vote was returned with success.';
+        console.log(message);
+        showSuccessMessage(message);
+        console.log(response);
     }
 }
 
@@ -270,16 +286,11 @@ async function getMyVote() {
     window.ElectoralVoting.methods.getMyVote()
         .call({ from: window.web3.eth.defaultAccount })
         .then(function (result) {
-            const message = 'Your vote was returned with success.';
-            console.log(message);
-            showSuccessMessage(message);
-            result = {
+            return result = {
                 "name": result.name_,
                 "politicalParty": result.politicalParty_,
                 "number": result.number_
             };
-            console.log(result);
-            return result;
         })
         .catch(function (error) {
             logError(error.reason);
