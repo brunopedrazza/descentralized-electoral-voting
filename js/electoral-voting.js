@@ -3,6 +3,8 @@ const contractByteCode = electoralVotingDeploy.data.bytecode.object;
 
 var contractToBeDeployed;
 
+hideSecondStep();
+
 const ethEnabled = () => {
     if (window.ethereum) {
         window.web3 = new Web3(Web3.givenProvider || "ws://localhost:8545");
@@ -31,8 +33,8 @@ else {
         console.log("Account changed to address: " + accounts[0]);
         changeCurrentAddress(accounts[0]);
         if (window.responsible) {
-            const isResponsible = window.web3.eth.defaultAccount == window.responsible;
-            if (isResponsible) createAddCandidate();
+            window.isResponsible = window.web3.eth.defaultAccount == window.responsible;
+            if (window.isResponsible) createAddCandidate();
             else hideAddCandidate();
             changeResponsibleMessage();
         }
@@ -40,7 +42,7 @@ else {
 }
 
 function callDeployContract() {
-    changeTitle("Deploying the contract...");
+    showLoadingMessage("Deploying the contract...");
 
     var politicalOffice = document.getElementById("political-office").value;
     var country = document.getElementById("country").value;
@@ -48,13 +50,14 @@ function callDeployContract() {
     var startTime = Date.parse(document.getElementById("start-time").value);
     var endTime = Date.parse(document.getElementById("end-time").value);
 
+    contractToBeDeployed.options.address = window.web3.eth.defaultAccount;
+    contractToBeDeployed.defaultAccount = window.web3.eth.defaultAccount;
+
     deployContract(politicalOffice, country, electionYear, secondsSinceEpoch(startTime), secondsSinceEpoch(endTime));
 }
 
 async function deployContract(politicalOffice, country, year, startTime, endTime) {
     var args = [politicalOffice, country, year, startTime, endTime];
-    contractToBeDeployed.options.address = window.web3.eth.defaultAccount;
-    contractToBeDeployed.defaultAccount = window.web3.eth.defaultAccount;
     console.log("Deploying contract with these arguments:");
     console.log(args);
     try {
@@ -63,9 +66,11 @@ async function deployContract(politicalOffice, country, year, startTime, endTime
             .on('transactionHash', function (transactionHash) { console.log(transactionHash); })
             .on('error', function () {
                 logError('deployContract');
+                hideLoadingMessage();
                 showErrorReason('Unknown error while trying to deploy the contract.');
             })
             .then(function (newContractInstance) {
+                hideLoadingMessage();
                 const message = 'Contract deployed with success!';
                 console.log(message);
                 showSuccessMessage(message);
@@ -76,6 +81,7 @@ async function deployContract(politicalOffice, country, year, startTime, endTime
     }
     catch {
         logError('deployContract');
+        hideLoadingMessage();
         showErrorReason('Invalid inputs to deploy the contract.');
     }
 }
@@ -92,23 +98,38 @@ function useExistingContract() {
     }
 }
 
+function callAddCandidate() {
+    showLoadingMessage("Adding candidate...");
+
+    var politicalOffice = document.getElementById("political-office").value;
+    var country = document.getElementById("country").value;
+    var electionYear = document.getElementById("election-year").value;
+    var startTime = Date.parse(document.getElementById("start-time").value);
+    var endTime = Date.parse(document.getElementById("end-time").value);
+
+    add(politicalOffice, country, electionYear, secondsSinceEpoch(startTime), secondsSinceEpoch(endTime));
+}
+
 async function addCandidate(name, politicalParty, number) {
     try {
         window.ElectoralVoting.methods.addCandidate(name, politicalParty, number)
             .send({ from: window.web3.eth.defaultAccount })
             .on('receipt', function (receipt) {
                 const message = 'Candidate added with success.';
+                hideLoadingMessage();
                 console.log(message);
                 showSuccessMessage(message);
                 console.log(receipt);
             })
             .catch(function (error) {
+                hideLoadingMessage();
                 logError(error.reason);
                 showErrorReason(error.reason);
             });
     }
     catch {
         logError('addCandidate');
+        hideLoadingMessage();
         showErrorReason('Invalid inputs to add a candidate.');
     }
 }
@@ -260,8 +281,19 @@ function hideSuccessMessage() {
     successMessage.innerHTML = "";
 }
 
+function showLoadingMessage(message) {
+    var loadingMessage = document.getElementById('loading-message');
+    loadingMessage.innerHTML = message;
+}
+
+function hideLoadingMessage() {
+    var loadingMessage = document.getElementById('loading-message');
+    loadingMessage.innerHTML = "";
+}
+
 function showInformations(info) {
     hideFirstStep();
+    showSecondStep();
     changeTitle(info.politicalOffice + " election in " + info.country + " " + info.year);
 
     createSpanElement('Responsible address: ' + info.responsible);
@@ -279,9 +311,27 @@ function hideFirstStep() {
 
 function hideAddCandidate() {
     var addCandidate = document.getElementById("add-candidate");
-    if (addCandidate) {
-        addCandidate.remove();
-    }
+    addCandidate.style.display = "none";
+}
+
+function showSecondStep() {
+    var secondStep = document.getElementById("second-step");
+    secondStep.style.display = "block";
+}
+
+function hideSecondStep() {
+    var secondStep = document.getElementById("second-step");
+    secondStep.style.display = "none";
+}
+
+function showFirstStep() {
+    var firstStep = document.getElementById("first-step");
+    firstStep.style.display = "block";
+}
+
+function showAddCandidate() {
+    var addCandidate = document.getElementById("add-candidate");
+    addCandidate.style.display = "block";
 }
 
 function createAddCandidate() {
@@ -349,9 +399,8 @@ function changeCurrentAddress(address) {
 }
 
 function changeResponsibleMessage() {
-    const isResponsible = window.web3.eth.defaultAccount == window.responsible;
     var responsibleMessage = document.getElementById("responsible-message");
-    if (isResponsible) {
+    if (window.isResponsible) {
         responsibleMessage.innerHTML = "You are the responsible for this Election.";
     }
     else {
