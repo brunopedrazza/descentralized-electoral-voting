@@ -30,9 +30,7 @@ function callDeployContract() {
     var country = document.getElementById("country").value;
     var electionYear = document.getElementById("election-year").value;
     var startTime = Date.parse(document.getElementById("start-time").value);
-    console.log(startTime);
     var endTime = Date.parse(document.getElementById("end-time").value);
-    console.log(endTime);
 
     deployContract(politicalOffice, country, electionYear, secondsSinceEpoch(startTime), secondsSinceEpoch(endTime));
 }

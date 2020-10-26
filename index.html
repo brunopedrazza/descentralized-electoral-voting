@@ -22,10 +22,10 @@
 	Country: <input type="text" id="country"><br>
 	Election year: <input type="text" id="election-year"><br>
 	Start time: <input type="datetime-local" id="start-time">
-	End time: <input type="datetime-local" id="end-time"><br>
+	End time: <input type="datetime-local" id="end-time"> (GMT-03:00 - Brasília Time)<br>
 	<button id="deploy-contract" onclick="callDeployContract()">Deploy Contract</button><br>
 	Contract address: <input type="text" id="contract-address"><br>
-	<button id="use-existing-contract" onclick="callDeployContract()">Use existing contract</button>
+	<button id="use-existing-contract" onclick="useExistingContract()">Use existing contract</button>
 </body>
 <script type="text/javascript" src="js/electoral-voting.js"></script>
 
