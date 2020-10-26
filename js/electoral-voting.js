@@ -20,11 +20,21 @@ else {
     contractToBeDeployed = new web3.eth.Contract(contractABI);
     var accountInterval = setInterval(function () {
         web3.eth.getAccounts().then(accounts => window.account = accounts[0]);
+        if (window.responsible) {
+            if (window.account != window.responsible) {
+                console.log("is not responsible");
+                killAddCandidate();
+            }
+            else {
+                console.log("is responsible")
+            }
+        }
     }, 1000);
 }
 
 function callDeployContract() {
     changeTitle("Deploying the contract...");
+
     var politicalOffice = document.getElementById("political-office").value;
     var country = document.getElementById("country").value;
     var electionYear = document.getElementById("election-year").value;
@@ -85,6 +95,7 @@ async function getElectionInformations() {
                 "endTime": epochToDate(result.endTime_),
             };
             console.log(result);
+            window.responsible = result.responsible;
             showInformations(result);
         })
         .catch(function (error) {
@@ -172,6 +183,11 @@ function showInformations(info) {
 function killFirstStep() {
     var firstStep = document.getElementById("first-step");
     firstStep.remove();
+}
+
+function killAddCandidate() {
+    var addCandidate = document.getElementById("add-candidate");
+    addCandidate.remove();
 }
 
 function createSpanElement(text) {
