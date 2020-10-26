@@ -187,7 +187,9 @@ function killFirstStep() {
 
 function killAddCandidate() {
     var addCandidate = document.getElementById("add-candidate");
-    addCandidate.remove();
+    if (addCandidate){
+        addCandidate.remove();
+    }
 }
 
 function createSpanElement(text) {
