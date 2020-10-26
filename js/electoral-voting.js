@@ -60,9 +60,9 @@ async function deployContract(politicalOffice, country, year, startTime, endTime
     try {
         contractToBeDeployed.deploy({ data: contractByteCode, arguments: args })
             .send({ from: window.web3.eth.defaultAccount })
-            .on('error', function (error) {
-                logError('deployContract');
-                showErrorReason('Unknown error while trying to deploy the contract.');
+            .catch(function (error) {
+                logError(error.reason);
+                showErrorReason(error.reason);
             })
             .on('transactionHash', function (transactionHash) { console.log(transactionHash); })
             .then(function (newContractInstance) {
@@ -98,9 +98,9 @@ async function addCandidate(name, politicalParty, number) {
                 console.log('Candidate added with success.');
                 console.log(receipt);
             })
-            .on('error', function (error) {
-                logError('addCandidate');
-                showErrorReason('Unknown while trying to add a candidate.');
+            .catch(function (error) {
+                logError(error.reason);
+                showErrorReason(error.reason);
             });
     }
     catch {
@@ -133,43 +133,58 @@ async function getElectionInformations() {
 }
 
 async function getCandidate(number) {
-    window.ElectoralVoting.methods.getCandidate(number).call()
-        .then(function (result) {
-            console.log('Candidate found with success.');
-            console.log(result);
-        })
-        .catch(function (error) {
-            logError(error.reason);
-            showErrorReason(error.reason);
-        });
+    try {
+        window.ElectoralVoting.methods.getCandidate(number).call()
+            .then(function (result) {
+                console.log('Candidate found with success.');
+                console.log(result);
+            })
+            .catch(function (error) {
+                logError(error.reason);
+                showErrorReason(error.reason);
+            });
+    }
+    catch {
+        logError('getCandidate');
+        showErrorReason('Invalid inputs to get a candidate.');
+    }
 }
 
 async function getVotesCount(number) {
-    window.ElectoralVoting.methods.getCandidateVotesCount(number).call()
-        .then(function (result) {
-            console.log('Number of votes for this candidate:');
-            console.log(result); 
-        })
-        .catch(function (error) {
-            logError(error.reason);
-            showErrorReason(error.reason);
-        });
+    try {
+        window.ElectoralVoting.methods.getCandidateVotesCount(number).call()
+            .then(function (result) {
+                console.log('Number of votes for this candidate:');
+                console.log(result); 
+            })
+            .catch(function (error) {
+                logError(error.reason);
+                showErrorReason(error.reason);
+            });
+    }
+    catch {
+        logError('getVotesCount');
+        showErrorReason('Invalid inputs to get votes count.');
+    }
 }
 
 async function vote(number) {
-    window.ElectoralVoting.methods.vote(number)
-        .send({ from: window.web3.eth.defaultAccount })
-        .on('receipt', function (receipt) {
-            console.log('Your vote was computed with success.');
-            console.log(receipt); 
-        })
-        .on('error', function (error) {
-            logError('vote');
-            showErrorReason('Unknown while trying to vote.');
-        }).catch(function (error) {
-            logError(error.reason);
-            showErrorReason(error.reason);
-        });
+    try {
+        window.ElectoralVoting.methods.vote(number)
+            .send({ from: window.web3.eth.defaultAccount })
+            .on('receipt', function (receipt) {
+                console.log('Your vote was computed with success.');
+                console.log(receipt); 
+            })
+            .catch(function (error) {
+                logError(error.reason);
+                showErrorReason(error.reason);
+            });
+    }
+    catch {
+        logError('vote');
+        showErrorReason('Invalid inputs to vote.');
+    }
 }
 
 async function getElectionWinner() {
