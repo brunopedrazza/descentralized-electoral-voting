@@ -16,7 +16,6 @@ const ethEnabled = () => {
 
 if (!ethEnabled()) {
     const message = "Metamask or browser with Ethereum not detected!";
-    alert(message);
     changeTitle(message);
     hideFirstStep();
 }
