@@ -23,27 +23,15 @@ else {
     contractToBeDeployed = new window.web3.eth.Contract(contractABI);
     window.ethereum.on('accountsChanged', function (accounts) {
         window.web3.eth.defaultAccount = accounts[0];
-        console.log("Account changed to address: " + accounts[0])
+        console.log("Account changed to address: " + accounts[0]);
+        changeCurrentAddress(accounts[0]);
         if (window.responsible) {
-            if (window.web3.eth.defaultAccount != window.responsible) {
-                hideAddCandidate();
-            }
-            else {
-                createAddCandidate();
-            }
+            const isResponsible = window.web3.eth.defaultAccount == window.responsible;
+            if (isResponsible) createAddCandidate();
+            else hideAddCandidate();
+            changeResponsibleMessage();
         }
     })
-    // var accountInterval = setInterval(function () {
-    //     web3.eth.getAccounts().then(accounts => window.account = accounts[0]);
-    //     if (window.responsible) {
-    //         if (window.account != window.responsible) {
-    //             hideAddCandidate();
-    //         }
-    //         else {
-    //             createAddCandidate();
-    //         }
-    //     }
-    // }, 1000);
 }
 
 function callDeployContract() {
@@ -110,6 +98,7 @@ async function getElectionInformations() {
             console.log(result);
             window.responsible = result.responsible;
             showInformations(result);
+            changeResponsibleMessage();
         })
         .catch(function (error) {
             handleError('getElectionInformations');
@@ -262,7 +251,23 @@ function createSpanElement(text) {
 function changeTitle(text) {
     var title = document.getElementById("title");
     title.innerHTML = text;
-} 
+}
+
+function changeCurrentAddress(address) {
+    var currentAddress = document.getElementById("current-address");
+    currentAddress.innerHTML = "Current address is: " + address;
+}
+
+function changeResponsibleMessage() {
+    const isResponsible = window.web3.eth.defaultAccount == window.responsible;
+    var responsibleMessage = document.getElementById("responsible-message");
+    if (isResponsible) {
+        responsibleMessage.innerHTML = "You are the responsible for this Election.";
+    }
+    else {
+        responsibleMessage.innerHTML = "";
+    }
+}
 
 function secondsSinceEpoch(date) {  
     return Math.floor( date / 1000 );  
