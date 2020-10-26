@@ -36,6 +36,7 @@ else {
             showOrNotAddCandidate();
             changeResponsibleMessage();
         }
+        removeAllData();
     })
 }
 
@@ -202,6 +203,7 @@ async function getVotesCount(number) {
             .call({ from: window.web3.eth.defaultAccount })
             .then(function (result) {
                 console.log('Number of votes for this candidate:');
+                showVotesCount(result);
                 console.log(result);
             })
             .catch(function (error) {
@@ -365,6 +367,25 @@ function showCandidate(elementId, candidate) {
     createSpanElement('Name: ' + candidate.name, elementId);
     createSpanElement('Political party: ' + candidate.politicalParty, elementId);
     createSpanElement('Number: ' + candidate.number, elementId);
+}
+
+function showVotesCount(voteCount) {
+    var voteCountEl = document.getElementById('vote-count');
+    voteCountEl.innerHTML = "Total of " + voteCount + " votes";
+}
+
+function removeAllData() {
+    var allElements = [];
+    allElements.push(document.getElementById('winner'));
+    allElements.push(document.getElementById('candidate-searched'));
+    allElements.push(document.getElementById('my-vote'));
+    allElements.push(document.getElementById('vote-count'));
+
+    allElements.forEach(function (el) {
+        while (el.firstChild) {
+            el.removeChild(el.lastChild);
+        }
+    });
 }
 
 function showOrNotAddCandidate() {
