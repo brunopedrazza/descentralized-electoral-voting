@@ -63,10 +63,11 @@ async function deployContract(politicalOffice, country, year, startTime, endTime
             .send({ from: window.web3.eth.defaultAccount })
             .on('transactionHash', function (transactionHash) { console.log(transactionHash); })
             .on('error', function (error) {
-                if (error.code == 4001) error.reason = 'Transaction was rejected by you.'
+                if (error.code == 4001) error.reason = 'Transaction was rejected by you.';
+                else error.reason = 'Unknown error while trying to deploy the contract.';
                 logError('deployContract');
                 hideLoadingMessage();
-                showErrorReason('Unknown error while trying to deploy the contract.');
+                showErrorReason(error.reason);
             })
             .then(function (newContractInstance) {
                 hideLoadingMessage();
