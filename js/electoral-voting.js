@@ -411,14 +411,8 @@ function hideCandidate(from) {
 }
 
 function showOrNotAddCandidate() {
-    if (window.isResponsible) {
-        showAddCandidate();
-        hideVotersView();
-    }
-    else {
-        hideAddCandidate();
-        showVotersView();
-    }
+    if (window.isResponsible) showAddCandidate();
+    else hideAddCandidate();
 }
 
 function hideFirstStep() {
@@ -442,16 +436,6 @@ function showSecondStep() {
 function hideSecondStep() {
     var secondStep = document.getElementById("second-step");
     secondStep.style.display = "none";
-}
-
-function showVotersView() {
-    var votersView = document.getElementById("voters-view");
-    votersView.style.display = "block";
-}
-
-function hideVotersView() {
-    var votersView = document.getElementById("voters-view");
-    votersView.style.display = "none";
 }
 
 function showFirstStep() {
