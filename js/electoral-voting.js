@@ -194,7 +194,7 @@ async function getCandidate(number) {
                 result = {
                     "name": result.name_,
                     "politicalParty": result.politicalParty_,
-                    "number": result.number_
+                    "number": number
                 };
                 const message = 'Candidate found with success.';
                 console.log(message);
