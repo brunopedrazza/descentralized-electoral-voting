@@ -9,7 +9,7 @@ const ethEnabled = () => {
     if (window.ethereum) {
         window.ethereum.autoRefreshOnNetworkChange = false;
         window.web3 = new Web3(window.ethereum);
-        await window.ethereum.request({ method: 'eth_requestAccounts' });
+        window.ethereum.request({ method: 'eth_requestAccounts' });
         return true;
     }
     return false;
@@ -109,14 +109,14 @@ async function deployContract(politicalOffice, place, year, startTime, endTime) 
 }
 
 function useExistingContract() {
-    var existingContractAddress = document.getElementById("contract-address").value;
     try {
+        var existingContractAddress = document.getElementById("contract-address").value;
         window.ElectoralVoting = new window.web3.eth.Contract(contractABI, existingContractAddress);
         console.log('Existing ElectoralVoting contract has loaded.');
         window.localStorage.setItem("contractAddress", existingContractAddress);
         getElectionInformations();
     }
-    catch {
+    catch (error) {
         showErrorReason('A contract with this address was not found.');
     }
 }
