@@ -186,7 +186,7 @@
 						</div>
 						<div class="row">
 							<div class="col-md-12 mb-3">
-								<button type="button" class="btn btn-lg btn-block btn-outline-primary"
+								<button type="button" class="btn btn-lg btn-block btn-outline-success"
 									onclick="callGetWinner()">
 									Get winner candidate
 								</button>
@@ -194,7 +194,7 @@
 									<li class="list-group-item d-flex justify-content-between lh-condensed">
 										<div>
 											<h4 class="my-0" id="winner-name">Name</h6>
-											<h6 class="text-muted mt-3" id="winner-party">Political party</h6>
+												<h6 class="text-muted mt-3" id="winner-party">Political party</h6>
 										</div>
 										<h6 class="text-muted" id="winner-number">Number</h6>
 									</li>
@@ -204,38 +204,59 @@
 					</div>
 				</div>
 				<hr class="mb-4">
-				<div id="voters-view">
-					<div id="vote-form">
-						<h3>Vote for a candidate</h3>
-						Number: <input type="number" id="vote-number">
-						<button id="vote" onclick="callVote()">Vote</button><br>
+				<div class="card mb-4 shadow-sm">
+					<div class="card-body">
+						<div class="row">
+							<div class="col-md-6 mb-3">
+								<form class="card p-2">
+									<div class="input-group">
+										<input type="number" id="vote-number" class="form-control"
+											placeholder="Number">
+										<div class="input-group-append">
+											<button type="button" id="vote" onclick="callVote()"
+												class="btn btn-warning">
+												VOTE
+											</button>
+										</div>
+									</div>
+								</form>
+							</div>
+							<div class="col-md-6 mb-3">
+								<form class="card p-2">
+									<div class="input-group">
+										<input type="number" id="candidate-votes-count" class="form-control"
+											placeholder="Number">
+										<div class="input-group-append">
+											<button type="button" id="get-votes-count" onclick="callGetVotesCount()"
+												class="btn btn-outline-primary">
+												Get votes count
+											</button>
+										</div>
+									</div>
+									<h5 class="mt-3" id="vote-count">Number of votes</h5>
+								</form>
+							</div>
+						</div>
 					</div>
 				</div>
-				<div id="get-votes-count-form">
-					<h3>Get votes count</h3>
-					Number: <input type="number" id="candidate-votes-count">
-					<button id="get-votes-count" onclick="callGetVotesCount()">Get votes count</button><br>
-					<div id="vote-count"></div>
-				</div>
 			</div>
+
 		</div>
 
-	</div>
-
-	<footer class="my-5 pt-5 text-muted text-center text-small">
-		<h2 id="current-address"></h2>
-		<ul class="list-inline">
-			<h4 id="loading-message" class="text-info"></h4>
-			<h4 id="error-message" class="text-danger"></h4>
-			<h4 id="success-message" class="text-success"></h4>
-		</ul>
-		<button class="btn btn-primary btn-lg" id="reload-button" style="display: none" type="button"
-			onclick="deleteLocalAndReload()">
-			Deploy or load other contract
-		</button>
-		<h3 id="responsible-message"></h3>
-		<p class="mb-1">&copy; 2020 Bruno Pedrazza</p>
-	</footer>
+		<footer class="my-5 pt-5 text-muted text-center text-small">
+			<h2 id="current-address"></h2>
+			<ul class="list-inline">
+				<h4 id="loading-message" class="text-info"></h4>
+				<h4 id="error-message" class="text-danger"></h4>
+				<h4 id="success-message" class="text-success"></h4>
+			</ul>
+			<button class="btn btn-primary btn-lg" id="reload-button" style="display: none" type="button"
+				onclick="deleteLocalAndReload()">
+				Deploy or load other contract
+			</button>
+			<h3 id="responsible-message"></h3>
+			<p class="mb-1">&copy; 2020 Bruno Pedrazza</p>
+		</footer>
 	</div>
 </body>
 

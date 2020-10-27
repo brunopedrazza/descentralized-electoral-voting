@@ -43,7 +43,7 @@ else {
             showOrNotAddCandidate();
             changeResponsibleMessage();
         }
-        removeAllData();
+        clearAllData();
     })
 }
 
@@ -392,18 +392,12 @@ function showCandidate(candidate, from) {
 
 function showVotesCount(voteCount) {
     var voteCountEl = document.getElementById('vote-count');
-    voteCountEl.innerHTML = "Total of " + voteCount + " votes";
+    voteCountEl.innerHTML = "Candidate was voted " + voteCount + " times";
 }
 
-function removeAllData() {
-    var allElements = [];
-    allElements.push(document.getElementById('vote-count'));
+function clearAllData() {
 
-    allElements.forEach(function (el) {
-        while (el.firstChild) {
-            el.removeChild(el.lastChild);
-        }
-    });
+    document.getElementById('vote-count').innerHTML = "Number of votes";
 
     hideCandidate("winner");
     hideCandidate("searched");
