@@ -82,6 +82,29 @@
 
 		<div class="row" id="second-step">
 			<div class="col-md-4 order-md-2 mb-4">
+				<div class="mb-4" id="add-candidate-form">
+					<h4 class="d-flex justify-content-between align-items-center mb-3">
+						Add a candidate
+					</h4>
+					<form>
+						<div class="mb-3">
+							<label for="candidateName">Name</label>
+							<input type="text" class="form-control" id="candidate-name">
+						</div>
+						<div class="mb-3">
+							<label for="candidatePoliticalParty">Political party</label>
+							<input type="text" class="form-control" id="political-party">
+						</div>
+						<div class="mb-3">
+							<label for="contract">Number</label>
+							<input type="number" class="form-control" id="candidate-number">
+						</div>
+						<hr class="mb-4">
+						<button class="btn btn-primary btn-lg btn-block" id="add-candidate" type="button" onclick="callAddCandidate()">
+							Add
+						</button>
+					</form>
+				</div>
 				<h4 class="d-flex justify-content-between align-items-center mb-3">
 					<span class="text-muted">Candidates added</span>
 				</h4>
@@ -100,13 +123,6 @@
 						<button id="check-vote" onclick="callGetMyVote()">Check my vote</button><br>
 						<div id="my-vote"></div>
 					</div>
-				</div>
-				<div id="add-candidate-form">
-					<h3>Add a candidate</h3>
-					Name: <input type="text" id="candidate-name"><br>
-					Political party: <input type="text" id="political-party"><br>
-					Number: <input type="number" id="candidate-number"><br>
-					<button id="add-candidate" onclick="callAddCandidate()">Add candidate</button><br>
 				</div>
 				<div id="get-candidate-form">
 					<h3>Get a candidate by his number</h3>
