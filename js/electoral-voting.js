@@ -465,13 +465,13 @@ function changeTitle(text) {
 
 function changeCurrentAddress(address) {
     var currentAddress = document.getElementById("current-address");
-    currentAddress.innerHTML = "Current address is: " + address;
+    currentAddress.innerHTML = address;
 }
 
 function changeResponsibleMessage() {
     var responsibleMessage = document.getElementById("responsible-message");
     if (window.isResponsible) {
-        responsibleMessage.innerHTML = "You are the responsible for this Election.";
+        responsibleMessage.innerHTML = "You are the responsible for this election";
     }
     else {
         responsibleMessage.innerHTML = "";
