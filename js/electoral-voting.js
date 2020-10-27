@@ -438,6 +438,9 @@ function hideAddCandidate() {
 function showSecondStep() {
     var secondStep = document.getElementById("second-step");
     secondStep.style.display = "flex";
+
+    var reloadButton = document.getElementById("reload-button");
+    reloadButton.style.display = "block";
 }
 
 function hideSecondStep() {
