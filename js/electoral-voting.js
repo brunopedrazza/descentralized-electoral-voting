@@ -352,6 +352,11 @@ function showInformations() {
     changeTitle(info.politicalOffice + " election in " + info.country + " " + info.year);
 
     fillInfo("responsible-info", info.responsible);
+    fillInfo("political-office-info", info.politicalOffice);
+    fillInfo("country-info", info.country);
+    fillInfo("year-info", info.year);
+    fillInfo("start-time-info", info.startTime);
+    fillInfo("end-time-info", info.endTime);
 }
 
 function fillInfo(id, text) {
