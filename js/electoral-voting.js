@@ -412,7 +412,7 @@ function hideAddCandidate() {
 
 function showSecondStep() {
     var secondStep = document.getElementById("second-step");
-    secondStep.style.display = "block";
+    secondStep.style.display = "flex";
 }
 
 function hideSecondStep() {
