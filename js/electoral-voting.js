@@ -427,7 +427,7 @@ function hideSecondStep() {
 
 function showVotersView() {
     var votersView = document.getElementById("voters-view");
-    votersView.style.display = "block";
+    votersView.style.display = "flex";
 }
 
 function hideVotersView() {
@@ -437,12 +437,12 @@ function hideVotersView() {
 
 function showFirstStep() {
     var firstStep = document.getElementById("first-step");
-    firstStep.style.display = "block";
+    firstStep.style.display = "flex";
 }
 
 function showAddCandidate() {
     var addCandidate = document.getElementById("add-candidate-form");
-    addCandidate.style.display = "block";
+    addCandidate.style.display = "flex";
 }
 
 function createSpanElement(text, elementId) {
