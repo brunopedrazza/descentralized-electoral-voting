@@ -143,20 +143,20 @@
 						</div>
 					</div>
 				</div>
+				<hr class="mb-4">
 				<div class="card mb-4 shadow-sm">
 					<div class="card-body">
 						<div class="row">
 							<div class="col-md-6 mb-3">
 								<button type="button" class="btn btn-lg btn-block btn-outline-primary"
-									onclick="callGetWinner()">Get winner
-									candidate</button>
-								<ul class="list-group mb-3" id="candidate-winner">
+									onclick="callGetMyVote()">Get candidate I voted for</button>
+								<ul class="list-group mb-3" id="candidate-vote">
 									<li class="list-group-item d-flex justify-content-between lh-condensed">
 										<div>
-											<h6 class="my-0" id="winner-name">Name</h6>
-											<small class="text-muted" id="winner-party">Political party</small>
+											<h6 class="my-0" id="vote-name">Name</h6>
+											<small class="text-muted" id="vote-party">Political party</small>
 										</div>
-										<span class="text-muted" id="winner-number">Number</span>
+										<span class="text-muted" id="vote-number">Number</span>
 									</li>
 								</ul>
 							</div>
@@ -185,50 +185,37 @@
 							</div>
 						</div>
 						<div class="row">
-							<div class="col-md-6 mb-3">
+							<div class="col-md-12 mb-3">
 								<button type="button" class="btn btn-lg btn-block btn-outline-primary"
-									onclick="callGetMyVote()">Get candidate I voted for</button>
-								<ul class="list-group mb-3" id="candidate-vote">
+									onclick="callGetWinner()">
+									Get winner candidate
+								</button>
+								<ul class="list-group mb-3" id="candidate-winner">
 									<li class="list-group-item d-flex justify-content-between lh-condensed">
 										<div>
-											<h6 class="my-0" id="vote-name">Name</h6>
-											<small class="text-muted" id="vote-party">Political party</small>
+											<h4 class="my-0" id="winner-name">Name</h6>
+											<h6 class="text-muted mt-3" id="winner-party">Political party</h6>
 										</div>
-										<span class="text-muted" id="vote-number">Number</span>
+										<h6 class="text-muted" id="winner-number">Number</h6>
 									</li>
 								</ul>
 							</div>
 						</div>
 					</div>
 				</div>
+				<hr class="mb-4">
 				<div id="voters-view">
 					<div id="vote-form">
 						<h3>Vote for a candidate</h3>
 						Number: <input type="number" id="vote-number">
 						<button id="vote" onclick="callVote()">Vote</button><br>
 					</div>
-					<div id="check-vote-form">
-						<h3>Check your vote</h3>
-						<button id="check-vote" onclick="callGetMyVote()">Check my vote</button><br>
-						<div id="my-vote"></div>
-					</div>
-				</div>
-				<div id="get-candidate-form">
-					<h3>Get a candidate by his number</h3>
-					Number: <input type="number" id="candidate-number-get">
-					<button id="get-candidate" onclick="callGetCandidate()">Get candidate</button><br>
-					<div id="candidate-searched"></div>
 				</div>
 				<div id="get-votes-count-form">
 					<h3>Get votes count</h3>
 					Number: <input type="number" id="candidate-votes-count">
 					<button id="get-votes-count" onclick="callGetVotesCount()">Get votes count</button><br>
 					<div id="vote-count"></div>
-				</div>
-				<div id="get-winner">
-					<h3>Get election's winner</h3>
-					<button id="get-candidate" onclick="callGetWinner()">Get winner</button><br>
-					<div id="winner"></div>
 				</div>
 			</div>
 		</div>
