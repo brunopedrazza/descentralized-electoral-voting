@@ -30,9 +30,15 @@ else {
     }
 
     window.web3.eth.getAccounts().then(function (accounts) {
-        window.web3.eth.defaultAccount = accounts[0];
-        changeCurrentAddress(accounts[0]);
-        console.log("Current account: " + accounts[0]);
+        if (accounts) {
+            window.web3.eth.defaultAccount = accounts[0];
+            changeCurrentAddress(accounts[0]);
+            console.log("Current account: " + accounts[0]);
+        }
+        else {
+            changeCurrentAddress("You don't have any active account");
+            console.log("No account available.");
+        }
     });
     window.ethereum.on('accountsChanged', function (accounts) {
         window.web3.eth.defaultAccount = accounts[0];
