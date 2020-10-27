@@ -22,9 +22,6 @@
 		<div class="py-5 text-center">
 			<h3 id="title">Descentralized Electoral Voting</h3>
 			<p class="lead">You can deploy a new Electoral Voting contract or use an existing one with it's address.</p>
-			<h5 id="loading-message" class="text-info"></h5>
-			<h5 id="error-message" class="text-danger"></h5>
-			<h5 id="success-message" class="text-success"></h5>
 		</div>
 
 		<div class="row" id="first-step">
@@ -181,16 +178,16 @@
 
 	<footer class="my-5 pt-5 text-muted text-center text-small">
 		<h2 id="current-address"></h2>
+		<ul class="list-inline">
+			<h4 id="loading-message" class="text-info"></h4>
+			<h4 id="error-message" class="text-danger"></h4>
+			<h4 id="success-message" class="text-success"></h4>
+		</ul>
 		<button class="btn btn-primary btn-lg" id="reload-button" style="display: none" type="button" onclick="deleteLocalAndReload()">
 			Deploy or load other contract
 		</button>
 		<h3 id="responsible-message"></h3>
 		<p class="mb-1">&copy; 2020 Bruno Pedrazza</p>
-		<ul class="list-inline">
-			<h5 id="loading-message" class="text-info"></h5>
-			<h5 id="error-message" class="text-danger"></h5>
-			<h5 id="success-message" class="text-success"></h5>
-		</ul>
 	</footer>
 	</div>
 </body>
