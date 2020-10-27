@@ -21,7 +21,14 @@ if (!ethEnabled()) {
 }
 
 else {
-    contractToBeDeployed = new window.web3.eth.Contract(contractABI);
+    const address = window.localStorage.getItem("contractAddress");
+    if (address) {
+        useLocalStorageAddress(address);
+    }
+    else {
+        contractToBeDeployed = new window.web3.eth.Contract(contractABI);
+    }
+
     window.web3.eth.getAccounts().then(function (accounts) {
         window.web3.eth.defaultAccount = accounts[0];
         changeCurrentAddress(accounts[0]);
@@ -76,6 +83,7 @@ async function deployContract(politicalOffice, country, year, startTime, endTime
                 console.log(message);
                 showSuccessMessage(message);
                 console.log('Contract address: ' + newContractInstance._address)
+                window.localStorage.setItem("contractAddress", newContractInstance._address);
                 window.ElectoralVoting = newContractInstance;
                 getElectionInformations();
             });
@@ -92,6 +100,18 @@ function useExistingContract() {
     try {
         window.ElectoralVoting = new window.web3.eth.Contract(contractABI, existingContractAddress);
         console.log('Existing ElectoralVoting contract has loaded.');
+        window.localStorage.setItem("contractAddress", existingContractAddress);
+        getElectionInformations();
+    }
+    catch {
+        showErrorReason('A contract with this address was not found.');
+    }
+}
+
+function useLocalStorageAddress(address) {
+    try {
+        window.ElectoralVoting = new window.web3.eth.Contract(contractABI, address);
+        console.log('Local storage ElectoralVoting contract has loaded.');
         getElectionInformations();
     }
     catch {
