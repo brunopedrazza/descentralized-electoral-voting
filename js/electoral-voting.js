@@ -440,7 +440,7 @@ function showSecondStep() {
     secondStep.style.display = "flex";
 
     var reloadButton = document.getElementById("reload-button");
-    reloadButton.style.display = "block";
+    reloadButton.style.removeProperty("display");
 }
 
 function hideSecondStep() {
