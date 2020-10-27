@@ -397,8 +397,6 @@ function showVotesCount(voteCount) {
 
 function removeAllData() {
     var allElements = [];
-    allElements.push(document.getElementById('winner'));
-    allElements.push(document.getElementById('candidate-searched'));
     allElements.push(document.getElementById('my-vote'));
     allElements.push(document.getElementById('vote-count'));
 
@@ -407,6 +405,16 @@ function removeAllData() {
             el.removeChild(el.lastChild);
         }
     });
+
+    hideCandidate("winner");
+    hideCandidate("searched");
+    hideCandidate("vote");
+}
+
+function hideCandidate(from) {
+    document.getElementById(from + "-name").innerHTML = "Name";
+    document.getElementById(from + "-party").innerHTML = "Political party";
+    document.getElementById(from + "-number").innerHTML = "Number";
 }
 
 function showOrNotAddCandidate() {
