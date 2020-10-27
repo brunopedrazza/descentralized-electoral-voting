@@ -3,7 +3,7 @@ const contractByteCode = electoralVotingDeploy.data.bytecode.object;
 
 var contractToBeDeployed;
 
-hideSecondStep();
+// hideSecondStep();
 
 const ethEnabled = () => {
     if (window.ethereum) {
