@@ -311,7 +311,7 @@ async function getMyVote() {
             console.log(message);
             showSuccessMessage(message);
             console.log(result);
-            showCandidate(result, "vote");
+            showCandidate(result, "voted");
         })
         .catch(function (error) {
             logError(error.reason);
@@ -386,8 +386,8 @@ function fillInfo(id, text) {
 
 function showCandidate(candidate, from) {
     document.getElementById(from + "-name").innerHTML = candidate.name;
-    document.getElementById(from + "-party").innerHTML = candidate.party;
-    document.getElementById(from + "-number").innerHTML = candidate.name;
+    document.getElementById(from + "-party").innerHTML = candidate.politicalParty;
+    document.getElementById(from + "-number").innerHTML = candidate.number;
 }
 
 function showVotesCount(voteCount) {
