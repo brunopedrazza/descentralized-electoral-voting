@@ -3,7 +3,7 @@ const contractByteCode = electoralVotingDeploy.data.bytecode.object;
 
 var contractToBeDeployed;
 
-hideSecondStep();
+// hideSecondStep();
 
 const ethEnabled = () => {
     if (window.ethereum) {
@@ -200,7 +200,7 @@ async function getCandidate(number) {
                 console.log(message);
                 showSuccessMessage(message);
                 console.log(result);
-                showCandidate("candidate-searched", result);
+                showCandidate(result, "searched");
             })
             .catch(function (error) {
                 logError(error.reason);
@@ -286,7 +286,7 @@ async function getElectionWinner() {
             console.log(message);
             showSuccessMessage(message);
             console.log(result);
-            showCandidate("winner", result);
+            showCandidate(result, "winner");
         })
         .catch(function (error) {
             logError(error.reason);
@@ -311,7 +311,7 @@ async function getMyVote() {
             console.log(message);
             showSuccessMessage(message);
             console.log(result);
-            showCandidate("my-vote", result);
+            showCandidate(result, "vote");
         })
         .catch(function (error) {
             logError(error.reason);
@@ -384,15 +384,10 @@ function fillInfo(id, text) {
     info.innerHTML = text;
 }
 
-function showCandidate(elementId, candidate) {
-    var candidateDiv = document.getElementById(elementId);
-    while (candidateDiv.firstChild) {
-        candidateDiv.removeChild(candidateDiv.lastChild);
-    }
-
-    createSpanElement('Name: ' + candidate.name, elementId);
-    createSpanElement('Political party: ' + candidate.politicalParty, elementId);
-    createSpanElement('Number: ' + candidate.number, elementId);
+function showCandidate(candidate, from) {
+    document.getElementById(from + "-name").innerHTML = candidate.name;
+    document.getElementById(from + "-party").innerHTML = candidate.party;
+    document.getElementById(from + "-number").innerHTML = candidate.name;
 }
 
 function showVotesCount(voteCount) {
