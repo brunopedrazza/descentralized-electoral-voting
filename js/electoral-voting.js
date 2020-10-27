@@ -30,7 +30,7 @@ else {
     }
 
     window.web3.eth.getAccounts().then(function (accounts) {
-        if (accounts) {
+        if (accounts.length > 0) {
             window.web3.eth.defaultAccount = accounts[0];
             changeCurrentAddress(accounts[0]);
             console.log("Current account: " + accounts[0]);
@@ -50,7 +50,7 @@ else {
             changeResponsibleMessage();
         }
         clearAllData();
-    })
+    });
 }
 
 function callDeployContract() {
