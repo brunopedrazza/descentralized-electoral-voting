@@ -51,7 +51,7 @@ function callDeployContract() {
     showLoadingMessage("Deploying the contract...");
 
     var politicalOffice = document.getElementById("political-office").value;
-    var country = document.getElementById("country").value;
+    var place = document.getElementById("place").value;
     var electionYear = document.getElementById("election-year").value;
     var startTime = Date.parse(document.getElementById("start-time").value);
     var endTime = Date.parse(document.getElementById("end-time").value);
@@ -59,11 +59,11 @@ function callDeployContract() {
     contractToBeDeployed.options.address = window.web3.eth.defaultAccount;
     contractToBeDeployed.defaultAccount = window.web3.eth.defaultAccount;
 
-    deployContract(politicalOffice, country, electionYear, secondsSinceEpoch(startTime), secondsSinceEpoch(endTime));
+    deployContract(politicalOffice, place, electionYear, secondsSinceEpoch(startTime), secondsSinceEpoch(endTime));
 }
 
-async function deployContract(politicalOffice, country, year, startTime, endTime) {
-    var args = [politicalOffice, country, year, startTime, endTime];
+async function deployContract(politicalOffice, place, year, startTime, endTime) {
+    var args = [politicalOffice, place, year, startTime, endTime];
     console.log("Deploying contract with these arguments:");
     console.log(args);
     try {
@@ -163,7 +163,7 @@ async function getElectionInformations() {
             var result = {
                 "responsible": result.responsible_,
                 "politicalOffice": result.politicalOffice_,
-                "country": result.country_,
+                "place": result.place_,
                 "year": result.year_,
                 "startTime": epochToDate(result.startTime_),
                 "endTime": epochToDate(result.endTime_)
@@ -369,11 +369,11 @@ function showInformations() {
 
     showOrNotAddCandidate();
 
-    changeTitle(info.politicalOffice + " election in " + info.country + " " + info.year);
+    changeTitle(info.politicalOffice + " election in " + info.place + " " + info.year);
 
     fillInfo("responsible-info", info.responsible);
     fillInfo("political-office-info", info.politicalOffice);
-    fillInfo("country-info", info.country);
+    fillInfo("place-info", info.place);
     fillInfo("year-info", info.year);
     fillInfo("start-time-info", info.startTime);
     fillInfo("end-time-info", info.endTime);

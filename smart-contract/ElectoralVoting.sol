@@ -20,7 +20,7 @@ contract ElectoralVoting {
     address public responsible;
     
     string public politicalOffice;
-    string public country;
+    string public place;
     string public electionYear;
     
     uint256 public startTime;
@@ -35,13 +35,13 @@ contract ElectoralVoting {
     /** 
      * @dev Create a new ElectoralVoting contract.
      * @param _politicalOffice political office to be contested in this election
-     * @param _country country of election
+     * @param _place place of election
      * @param _electionYear year of election
      * @param _startTime the time when the election will start
      * @param _endTime the time when the election will end
      */
     constructor(string memory _politicalOffice, 
-                string memory _country, 
+                string memory _place, 
                 string memory _electionYear, 
                 uint256 _startTime, 
                 uint256 _endTime) public {
@@ -50,7 +50,7 @@ contract ElectoralVoting {
         
         responsible = msg.sender;
         politicalOffice = _politicalOffice;
-        country = _country;
+        place = _place;
         electionYear = _electionYear;
         startTime = _startTime;
         endTime = _endTime;
@@ -99,16 +99,16 @@ contract ElectoralVoting {
      * @dev Get the election information
      * @return responsible_ address of the responsable for election
      * @return politicalOffice_ political office to be disputed
-     * @return country_ country of election
+     * @return place_ place of election
      * @return year_ year of election
      * @return startTime_ time that election begins
      * @return endTime_ time that election ends
      */
     function getElectionInformations() public view returns (address responsible_, string memory politicalOffice_, 
-                            string memory country_, string memory year_, uint256 startTime_, uint256 endTime_) {
+                            string memory place_, string memory year_, uint256 startTime_, uint256 endTime_) {
         responsible_ = responsible;
         politicalOffice_ = politicalOffice;
-        country_ = country;
+        place_ = place;
         year_ = electionYear;
         startTime_ = startTime;
         endTime_ = endTime;
