@@ -7,8 +7,8 @@ hideSecondStep();
 
 const ethEnabled = () => {
     if (window.ethereum) {
-        window.web3 = new Web3(Web3.givenProvider || "ws://localhost:8545");
-        window.web3.eth.handleRevert = true;
+        window.web3 = new Web3(window.ethereum);
+        window.ethereum.enable();
         return true;
     }
     return false;
@@ -21,9 +21,9 @@ if (!ethEnabled()) {
 }
 
 else {
-    const address = window.localStorage.getItem("contractAddress");
-    if (address) {
-        useLocalStorageAddress(address);
+    const localStorageAddress = window.localStorage.getItem("contractAddress");
+    if (localStorageAddress) {
+        useLocalStorageAddress(localStorageAddress);
     }
     else {
         contractToBeDeployed = new window.web3.eth.Contract(contractABI);
