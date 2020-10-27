@@ -55,8 +55,8 @@ else {
     });
 
     window.ethereum.on('chainChanged', (chainId) => {
-        console.log("Chain changed to " + chainId);
         window.location.reload();
+        console.log("Chain changed to " + chainId);
     });
 }
 
