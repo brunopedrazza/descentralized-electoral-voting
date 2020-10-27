@@ -397,7 +397,6 @@ function showVotesCount(voteCount) {
 
 function removeAllData() {
     var allElements = [];
-    allElements.push(document.getElementById('my-vote'));
     allElements.push(document.getElementById('vote-count'));
 
     allElements.forEach(function (el) {
