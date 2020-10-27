@@ -351,12 +351,12 @@ function showInformations() {
 
     changeTitle(info.politicalOffice + " election in " + info.country + " " + info.year);
 
-    createSpanElement('Responsible address: ' + info.responsible, "information");
-    createSpanElement('Political office: ' + info.politicalOffice, "information");
-    createSpanElement('Country: ' + info.country, "information");
-    createSpanElement('Year: ' + info.year, "information");
-    createSpanElement('Start time: ' + info.startTime, "information");
-    createSpanElement('End time: ' + info.endTime, "information");
+    fillInfo("responsible-info", info.responsible);
+}
+
+function fillInfo(id, text) {
+    var info = document.getElementById(id);
+    info.innerHTML = text;
 }
 
 function showCandidate(elementId, candidate) {
