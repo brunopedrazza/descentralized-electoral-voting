@@ -407,7 +407,7 @@ function removeAllData() {
 
     hideCandidate("winner");
     hideCandidate("searched");
-    hideCandidate("vote");
+    hideCandidate("voted");
 }
 
 function hideCandidate(from) {
