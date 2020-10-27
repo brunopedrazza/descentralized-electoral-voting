@@ -525,6 +525,11 @@ function addCandidateToList(name, politicalParty, number) {
     list.appendChild(li);
 }
 
+function deleteLocalAndReload() {
+    window.localStorage.removeItem("contractAddress");
+    location.reload();
+}
+
 function secondsSinceEpoch(date) {
     return Math.floor(date / 1000);
 }
