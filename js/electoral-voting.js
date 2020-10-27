@@ -9,7 +9,7 @@ const ethEnabled = () => {
     if (window.ethereum) {
         window.ethereum.autoRefreshOnNetworkChange = false;
         window.web3 = new Web3(window.ethereum);
-        window.ethereum.enable();
+        window.ethereum.send('eth_requestAccounts');
         return true;
     }
     return false;
@@ -41,6 +41,7 @@ else {
             console.log("No account available.");
         }
     });
+
     window.ethereum.on('accountsChanged', function (accounts) {
         window.web3.eth.defaultAccount = accounts[0];
         console.log("Account changed to address: " + accounts[0]);
@@ -51,6 +52,11 @@ else {
             changeResponsibleMessage();
         }
         clearAllData();
+    });
+
+    window.ethereum.on('chainChanged', (chainId) => {
+        console.log("Chain changed to " + chainId);
+        window.location.reload();
     });
 }
 
