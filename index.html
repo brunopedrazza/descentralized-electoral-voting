@@ -147,7 +147,8 @@
 					<div class="card-body">
 						<div class="row">
 							<div class="col-md-6 mb-3">
-								<button type="button" class="btn btn-lg btn-block btn-outline-primary" onclick="callGetWinner()">Get winner
+								<button type="button" class="btn btn-lg btn-block btn-outline-primary"
+									onclick="callGetWinner()">Get winner
 									candidate</button>
 								<ul class="list-group mb-3" id="candidate-winner">
 									<li class="list-group-item d-flex justify-content-between lh-condensed">
@@ -162,7 +163,8 @@
 							<div class="col-md-6 mb-3">
 								<form class="card p-2">
 									<div class="input-group">
-										<input type="number" id="candidate-number-get" class="form-control" placeholder="Number">
+										<input type="number" id="candidate-number-get" class="form-control"
+											placeholder="Number">
 										<div class="input-group-append">
 											<button type="submit" id="get-candidate" onclick="callGetCandidate()"
 												class="btn btn-outline-primary">
@@ -178,6 +180,21 @@
 											<small class="text-muted" id="searched-party">Political party</small>
 										</div>
 										<span class="text-muted" id="searched-number">Number</span>
+									</li>
+								</ul>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-md-6 mb-3">
+								<button type="button" class="btn btn-lg btn-block btn-outline-primary"
+									onclick="callGetMyVote()">Get candidate I voted for</button>
+								<ul class="list-group mb-3" id="candidate-vote">
+									<li class="list-group-item d-flex justify-content-between lh-condensed">
+										<div>
+											<h6 class="my-0" id="vote-name">Name</h6>
+											<small class="text-muted" id="vote-party">Political party</small>
+										</div>
+										<span class="text-muted" id="vote-number">Number</span>
 									</li>
 								</ul>
 							</div>
