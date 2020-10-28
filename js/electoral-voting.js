@@ -152,7 +152,6 @@ async function addCandidate(name, politicalParty, number) {
                 hideLoadingMessage();
                 console.log(message);
                 showSuccessMessage(message);
-                addCandidateToList(name, politicalParty, number);
                 console.log(receipt);
             })
             .catch(function (error) {
@@ -170,7 +169,8 @@ async function addCandidate(name, politicalParty, number) {
 }
 
 async function getElectionInformations() {
-    setInterval(function() { 
+    setInterval(function() {
+        cleanCadidatesTable();
         getNumberOfCandidates(); 
     }, 6000);
     window.ElectoralVoting.methods.getElectionInformations()
@@ -217,7 +217,7 @@ async function getCandidates(numberOfCandidates) {
         window.ElectoralVoting.methods.candidates(candidateIndex)
             .call({ from: window.web3.eth.defaultAccount })
             .then(function (result) {
-                console.log(result);
+                addCandidateToList(result);
             })
             .catch(function (error) {
                 logError(error.reason);
@@ -523,15 +523,22 @@ function changeResponsibleMessage() {
     }
 }
 
-function addCandidateToList(name, politicalParty, number) {
+function cleanCadidatesTable() {
+    var list = document.getElementById("candidates-list");
+    while (list.firstChild) {
+        list.removeChild(list.lastChild);
+    }
+}
+
+function addCandidateToList(candidate) {
     var h6 = document.createElement("H6");
     h6.className = "my-0";
-    var text = document.createTextNode(name);
+    var text = document.createTextNode(candidate.name);
     h6.appendChild(text);
 
     var small = document.createElement("SMALL");
     small.className = "text-muted";
-    var text = document.createTextNode(politicalParty);
+    var text = document.createTextNode(candidate.politicalParty);
     small.appendChild(text);
 
     var div = document.createElement("DIV");
@@ -540,7 +547,7 @@ function addCandidateToList(name, politicalParty, number) {
 
     var span = document.createElement("SPAN");
     span.className = "text-muted";
-    var text = document.createTextNode(number);
+    var text = document.createTextNode(candidate.number);
     span.appendChild(text);
 
     var li = document.createElement("LI");
