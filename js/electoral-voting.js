@@ -63,8 +63,6 @@ else {
 }
 
 function callDeployContract() {
-    showLoadingMessage("Deploying the contract...");
-
     var politicalOffice = document.getElementById("political-office").value;
     var place = document.getElementById("place").value;
     var electionYear = document.getElementById("election-year").value;
@@ -91,11 +89,9 @@ async function deployContract(politicalOffice, place, year, startTime, endTime) 
                 else error.reason = 'Unknown error while trying to deploy the contract.';
                 hideLoadingDeployButton();
                 logError('deployContract');
-                hideLoadingMessage();
                 showErrorReason(error.reason);
             })
             .then(function (newContractInstance) {
-                hideLoadingMessage();
                 const message = 'Contract deployed with success!';
                 console.log(message);
                 showSuccessMessage(message);
@@ -107,7 +103,6 @@ async function deployContract(politicalOffice, place, year, startTime, endTime) 
     }
     catch {
         logError('deployContract');
-        hideLoadingMessage();
         hideLoadingDeployButton();
         showErrorReason('Invalid inputs to deploy the contract.');
     }
