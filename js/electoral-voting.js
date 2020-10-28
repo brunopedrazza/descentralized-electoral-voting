@@ -297,6 +297,7 @@ async function vote(number) {
             .send({ from: window.web3.eth.defaultAccount })
             .on('receipt', function (receipt) {
                 const message = 'Your vote was computed with success.';
+                alert(message);
                 console.log(message);
                 hideLoadingVoteButton();
                 showSuccessMessage(message);
@@ -376,6 +377,7 @@ function showErrorReason(reason) {
     clearTimeout(timeoutError);
     var errorMessage = document.getElementById('error-message');
     errorMessage.innerHTML = reason;
+    alert(reason);
     timeoutError = setTimeout(hideErrorReason, 10000);
 }
 
