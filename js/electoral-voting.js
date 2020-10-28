@@ -535,3 +535,15 @@ function epochToDate(seconds) {
     var date = new Date(seconds * 1000);
     return date;
 }
+
+async function getCandidates() {
+    window.ElectoralVoting.methods.candidates()
+        .call({ from: window.web3.eth.defaultAccount })
+        .then(function (result) {
+            console.log(result)
+        })
+        .catch(function (error) {
+            logError(error.reason);
+            showErrorReason(error.reason);
+        });
+}
