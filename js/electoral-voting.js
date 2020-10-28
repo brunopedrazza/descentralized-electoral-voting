@@ -2,7 +2,7 @@ const contractABI = electoralVotingMetadata.output.abi;
 const contractByteCode = electoralVotingDeploy.data.bytecode.object;
 
 var contractToBeDeployed;
-var numberOfCandidates = 0;
+var totalCandidates = 0;
 
 hideSecondStep();
 
@@ -202,10 +202,10 @@ async function getNumberOfCandidates() {
         .then(function (result) {
             var nCandidates = parseInt(result);
             console.log('Number of candidates: ' + (nCandidates - 1));
-            if (nCandidates > numberOfCandidates) {
-                numberOfCandidates = nCandidates;
+            if (nCandidates > totalCandidates) {
+                totalCandidates = nCandidates;
                 cleanCadidatesTable();
-                getCandidates();
+                getCandidates(nCandidates);
             }
         })
         .catch(function (error) {
