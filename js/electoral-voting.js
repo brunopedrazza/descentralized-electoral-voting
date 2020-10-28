@@ -77,7 +77,7 @@ function callDeployContract() {
 
 async function deployContract(politicalOffice, place, year, startTime, endTime) {
     var args = [politicalOffice, place, year, startTime, endTime];
-    showLoadingDeployButton();
+    showLoadingDeployOrAddButton("deploy-contract", "Deploying contract...");
     console.log("Deploying contract with these arguments:");
     console.log(args);
     try {
@@ -87,7 +87,7 @@ async function deployContract(politicalOffice, place, year, startTime, endTime) 
             .on('error', function (error) {
                 if (error.code == 4001) error.reason = 'Transaction was rejected by you.';
                 else error.reason = 'Unknown error while trying to deploy the contract.';
-                hideLoadingDeployButton();
+                hideLoadingDeployOrAddButton("deploy-contract", "Deploying contract...");
                 logError('deployContract');
                 showErrorReason(error.reason);
             })
@@ -98,12 +98,13 @@ async function deployContract(politicalOffice, place, year, startTime, endTime) 
                 console.log('Contract address: ' + newContractInstance._address)
                 window.localStorage.setItem("contractAddress", newContractInstance._address);
                 window.ElectoralVoting = newContractInstance;
+                hideLoadingDeployOrAddButton("deploy-contract", "Deploy contract");
                 getElectionInformations();
             });
     }
     catch {
         logError('deployContract');
-        hideLoadingDeployButton();
+        hideLoadingDeployOrAddButton("deploy-contract", "Deploy contract");
         showErrorReason('Invalid inputs to deploy the contract.');
     }
 }
@@ -133,7 +134,7 @@ function useLocalStorageAddress(address) {
 }
 
 function callAddCandidate() {
-    showLoadingMessage("Adding candidate...");
+    showLoadingDeployOrAddButton("add-candidate", "Adding candidate...");
 
     var name = document.getElementById("candidate-name").value;
     var politicalParty = document.getElementById("political-party").value;
@@ -148,21 +149,21 @@ async function addCandidate(name, politicalParty, number) {
             .send({ from: window.web3.eth.defaultAccount })
             .on('receipt', function (receipt) {
                 const message = 'Candidate added with success.';
-                hideLoadingMessage();
+                hideLoadingDeployOrAddButton("add-candidate", "Add");
                 console.log(message);
                 showSuccessMessage(message);
                 console.log(receipt);
             })
             .catch(function (error) {
                 if (error.code == 4001) error.reason = 'Transaction was rejected by you.'
-                hideLoadingMessage();
+                hideLoadingDeployOrAddButton("add-candidate", "Add");
                 logError(error.reason);
                 showErrorReason(error.reason);
             });
     }
     catch {
         logError('addCandidate');
-        hideLoadingMessage();
+        hideLoadingDeployOrAddButton("add-candidate", "Add");
         showErrorReason('Invalid inputs to add a candidate.');
     }
 }
@@ -286,7 +287,7 @@ async function getVotesCount(number) {
 
 function callVote() {
     var number = document.getElementById("vote-number").value;
-    showLoadingMessage("Voting...");
+    showLoadingVoteButton();
     vote(parseInt(number));
 }
 
@@ -297,20 +298,20 @@ async function vote(number) {
             .on('receipt', function (receipt) {
                 const message = 'Your vote was computed with success.';
                 console.log(message);
-                hideLoadingMessage();
+                hideLoadingVoteButton();
                 showSuccessMessage(message);
                 console.log(receipt);
             })
             .catch(function (error) {
                 if (error.code == 4001) error.reason = 'Transaction was rejected by you.'
                 logError(error.reason);
-                hideLoadingMessage();
+                hideLoadingVoteButton();
                 showErrorReason(error.reason);
             });
     }
     catch {
         logError('vote');
-        hideLoadingMessage();
+        hideLoadingVoteButton();
         showErrorReason('Invalid inputs to vote for a candidate.');
     }
 }
@@ -395,16 +396,6 @@ function showSuccessMessage(message) {
 function hideSuccessMessage() {
     var successMessage = document.getElementById('success-message');
     successMessage.innerHTML = "";
-}
-
-function showLoadingMessage(message) {
-    var loadingMessage = document.getElementById('loading-message');
-    loadingMessage.innerHTML = message;
-}
-
-function hideLoadingMessage() {
-    var loadingMessage = document.getElementById('loading-message');
-    loadingMessage.innerHTML = "";
 }
 
 function showInformations() {
@@ -561,29 +552,51 @@ function addCandidateToList(candidate) {
     list.appendChild(li);
 }
 
-function showLoadingDeployButton() {
-    var deployButton = document.getElementById("deploy-contract");
-    deployButton.disabled = true;
-    deployButton.innerHTML = "";
+function showLoadingDeployOrAddButton(id, loadingText) {
+    var button = document.getElementById(id);
+    button.disabled = true;
+    button.innerHTML = "";
     
     var span = document.createElement("SPAN");
     span.className = "spinner-border spinner-border-sm mr-2";
     span.setAttribute("role", "status");
     span.setAttribute("aria-hidden", true);
-    deployButton.appendChild(span);
+    button.appendChild(span);
 
-    var text = document.createTextNode("Deploying contract...");
-    deployButton.appendChild(text);
+    var text = document.createTextNode(loadingText);
+    button.appendChild(text);
 }
 
-function hideLoadingDeployButton() {
-    var deployButton = document.getElementById("deploy-contract");
-    while (deployButton.firstChild) {
-        deployButton.removeChild(deployButton.lastChild);
+function hideLoadingDeployOrAddButton(id, text) {
+    var button = document.getElementById(id);
+    while (button.firstChild) {
+        button.removeChild(button.lastChild);
     }
 
-    deployButton.disabled = false;
-    deployButton.innerHTML = "Deploy contract";
+    button.disabled = false;
+    button.innerHTML = text;
+}
+
+function showLoadingVoteButton() {
+    var voteButton = document.getElementById("vote");
+    voteButton.disabled = true;
+    voteButton.innerHTML = "";
+    
+    var span = document.createElement("SPAN");
+    span.className = "spinner-grow spinner-grow-sm text-light";
+    span.setAttribute("role", "status");
+    span.setAttribute("aria-hidden", true);
+    voteButton.appendChild(span);
+}
+
+function hideLoadingVoteButton() {
+    var voteButton = document.getElementById("vote");
+    while (voteButton.firstChild) {
+        voteButton.removeChild(voteButton.lastChild);
+    }
+
+    voteButton.disabled = false;
+    voteButton.innerHTML = "VOTE";
 }
 
 function deleteLocalAndReload() {
