@@ -470,6 +470,9 @@ function showSecondStep() {
 
     var reloadButton = document.getElementById("reload-button");
     reloadButton.style.removeProperty("display");
+
+    var subtitle = document.getElementById("subtitle");
+    subtitle.innerHTML = "";
 }
 
 function hideSecondStep() {
