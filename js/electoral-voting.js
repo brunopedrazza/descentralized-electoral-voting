@@ -59,10 +59,6 @@ else {
         window.location.reload();
         console.log("Chain changed to " + chainId);
     });
-
-    setInterval(function() { 
-        getNumberOfCandidates(); 
-    }, 6000);
 }
 
 function callDeployContract() {
@@ -174,6 +170,9 @@ async function addCandidate(name, politicalParty, number) {
 }
 
 async function getElectionInformations() {
+    setInterval(function() { 
+        getNumberOfCandidates(); 
+    }, 6000);
     window.ElectoralVoting.methods.getElectionInformations()
         .call({ from: window.web3.eth.defaultAccount })
         .then(function (result) {
