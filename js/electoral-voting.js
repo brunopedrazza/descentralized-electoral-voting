@@ -202,8 +202,9 @@ async function getNumberOfCandidates() {
     window.ElectoralVoting.methods.getNumberOfCandidates()
         .call({ from: window.web3.eth.defaultAccount })
         .then(function (result) {
-            var nCandidates = result.numberOfCandidates_;
-            console.log('Number of candidates: ' + nCandidates);
+            var nCandidates = parseInt(result);
+            console.log('Number of candidates: ' + (nCandidates - 1));
+            getCandidates(nCandidates);
         })
         .catch(function (error) {
             logError(error.reason);
