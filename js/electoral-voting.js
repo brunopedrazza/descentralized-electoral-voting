@@ -2,6 +2,7 @@ const contractABI = electoralVotingMetadata.output.abi;
 const contractByteCode = electoralVotingDeploy.data.bytecode.object;
 
 var contractToBeDeployed;
+var numberOfCandidates = 0;
 
 hideSecondStep();
 
@@ -169,10 +170,7 @@ async function addCandidate(name, politicalParty, number) {
 }
 
 async function getElectionInformations() {
-    setInterval(function() {
-        cleanCadidatesTable();
-        getNumberOfCandidates(); 
-    }, 6000);
+    setInterval(getNumberOfCandidates, 10000);
     window.ElectoralVoting.methods.getElectionInformations()
         .call({ from: window.web3.eth.defaultAccount })
         .then(function (result) {
@@ -204,7 +202,11 @@ async function getNumberOfCandidates() {
         .then(function (result) {
             var nCandidates = parseInt(result);
             console.log('Number of candidates: ' + (nCandidates - 1));
-            getCandidates(nCandidates);
+            if (nCandidates > numberOfCandidates) {
+                numberOfCandidates = nCandidates;
+                cleanCadidatesTable();
+                getCandidates();
+            }
         })
         .catch(function (error) {
             logError(error.reason);
