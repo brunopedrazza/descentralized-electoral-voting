@@ -139,7 +139,7 @@ function callAddCandidate() {
     var politicalParty = document.getElementById("political-party").value;
     var candidateNumber = document.getElementById("candidate-number").value;
 
-    addCandidate(name, politicalParty, candidateNumber);
+    addCandidate(name, politicalParty, parseInt(candidateNumber));
 }
 
 async function addCandidate(name, politicalParty, number) {
@@ -196,7 +196,7 @@ async function getElectionInformations() {
 
 function callGetCandidate() {
     var number = document.getElementById("candidate-number-get").value;
-    getCandidate(number);
+    getCandidate(parseInt(number));
 }
 
 async function getCandidate(number) {
@@ -228,7 +228,7 @@ async function getCandidate(number) {
 
 function callGetVotesCount() {
     var number = document.getElementById("candidate-votes-count").value;
-    getVotesCount(number);
+    getVotesCount(parseInt(number));
 }
 
 async function getVotesCount(number) {
@@ -254,7 +254,7 @@ async function getVotesCount(number) {
 function callVote() {
     var number = document.getElementById("vote-number").value;
     showLoadingMessage("Voting...");
-    vote(number);
+    vote(parseInt(number));
 }
 
 async function vote(number) {
