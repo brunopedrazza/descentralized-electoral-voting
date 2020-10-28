@@ -216,6 +216,14 @@ contract ElectoralVoting {
         politicalParty_ = candidate.politicalParty;
         number_ = candidate.number;
     }
+
+    /** 
+     * @dev Get the number of candidates at this contract
+     * @return numberOfCandidates_ number of candidates
+     */
+    function getNumberOfCandidates() public view returns (uint256 numberOfCandidates_) {
+        numberOfCandidates_ = candidates.length;
+    }
     
     function hasCandidate(uint _number) internal view returns (bool) { 
         for (uint p = 0; p < candidates.length; p++) {

@@ -59,6 +59,10 @@ else {
         window.location.reload();
         console.log("Chain changed to " + chainId);
     });
+
+    setInterval(function() { 
+        getNumberOfCandidates(); 
+    }, 6000);
 }
 
 function callDeployContract() {
@@ -193,6 +197,33 @@ async function getElectionInformations() {
             logError(error.reason);
             showErrorReason(error.reason);
         });
+}
+
+async function getNumberOfCandidates() {
+    window.ElectoralVoting.methods.getNumberOfCandidates()
+        .call({ from: window.web3.eth.defaultAccount })
+        .then(function (result) {
+            var nCandidates = result.numberOfCandidates_;
+            console.log('Number of candidates: ' + nCandidates);
+        })
+        .catch(function (error) {
+            logError(error.reason);
+            showErrorReason(error.reason);
+        });
+}
+
+async function getCandidates(numberOfCandidates) {
+    for (let candidateIndex = 1; candidateIndex < numberOfCandidates; candidateIndex++) {
+        window.ElectoralVoting.methods.candidates(candidateIndex)
+            .call({ from: window.web3.eth.defaultAccount })
+            .then(function (result) {
+                console.log(result);
+            })
+            .catch(function (error) {
+                logError(error.reason);
+                showErrorReason(error.reason);
+            });
+    }
 }
 
 function callGetCandidate() {
@@ -536,8 +567,8 @@ function epochToDate(seconds) {
     return date;
 }
 
-async function getCandidates() {
-    window.ElectoralVoting.methods.candidates()
+async function getCandidates(index) {
+    window.ElectoralVoting.methods.candidates(index)
         .call({ from: window.web3.eth.defaultAccount })
         .then(function (result) {
             console.log(result)
