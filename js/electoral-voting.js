@@ -79,6 +79,7 @@ function callDeployContract() {
 
 async function deployContract(politicalOffice, place, year, startTime, endTime) {
     var args = [politicalOffice, place, year, startTime, endTime];
+    showLoadingDeployButton();
     console.log("Deploying contract with these arguments:");
     console.log(args);
     try {
@@ -88,6 +89,7 @@ async function deployContract(politicalOffice, place, year, startTime, endTime) 
             .on('error', function (error) {
                 if (error.code == 4001) error.reason = 'Transaction was rejected by you.';
                 else error.reason = 'Unknown error while trying to deploy the contract.';
+                hideLoadingDeployButton();
                 logError('deployContract');
                 hideLoadingMessage();
                 showErrorReason(error.reason);
@@ -106,6 +108,7 @@ async function deployContract(politicalOffice, place, year, startTime, endTime) 
     catch {
         logError('deployContract');
         hideLoadingMessage();
+        hideLoadingDeployButton();
         showErrorReason('Invalid inputs to deploy the contract.');
     }
 }
@@ -170,6 +173,7 @@ async function addCandidate(name, politicalParty, number) {
 }
 
 async function getElectionInformations() {
+    getNumberOfCandidates();
     setInterval(getNumberOfCandidates, 10000);
     window.ElectoralVoting.methods.getElectionInformations()
         .call({ from: window.web3.eth.defaultAccount })
@@ -560,6 +564,31 @@ function addCandidateToList(candidate) {
 
     var list = document.getElementById("candidates-list");
     list.appendChild(li);
+}
+
+function showLoadingDeployButton() {
+    var deployButton = document.getElementById("deploy-contract");
+    deployButton.disabled = true;
+    deployButton.innerHTML = "";
+    
+    var span = document.createElement("SPAN");
+    span.className = "spinner-border spinner-border-sm mr-2";
+    span.setAttribute("role", "status");
+    span.setAttribute("aria-hidden", true);
+    deployButton.appendChild(span);
+
+    var text = document.createTextNode("Deploying contract...");
+    deployButton.appendChild(text);
+}
+
+function hideLoadingDeployButton() {
+    var deployButton = document.getElementById("deploy-contract");
+    while (deployButton.firstChild) {
+        deployButton.removeChild(deployButton.lastChild);
+    }
+
+    deployButton.disabled = false;
+    deployButton.innerHTML = "Deploy contract";
 }
 
 function deleteLocalAndReload() {
