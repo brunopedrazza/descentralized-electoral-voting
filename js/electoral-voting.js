@@ -57,8 +57,8 @@ else {
     });
 
     window.ethereum.on('chainChanged', (chainId) => {
+        window.localStorage.removeItem("contractAddress");
         window.location.reload();
-        console.log("Chain changed to " + chainId);
     });
 }
 
