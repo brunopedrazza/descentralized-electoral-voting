@@ -11,7 +11,7 @@ You'll need to install an extension like Metamask in order to interact properly 
 
 ## Usage
 
-Open [this link](https://github.com/brunopedrazza/descentralized-electoral-voting) hosted on Github pages. Everything runs out of the box.
+Open [this link](https://brunopedrazza.github.io/descentralized-electoral-voting/) hosted on Github pages. Everything runs out of the box.
 You need to accept a connection between the extension and the application.
 
 
