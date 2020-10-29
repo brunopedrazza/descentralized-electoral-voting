@@ -212,6 +212,7 @@ async function getNumberOfCandidates() {
             console.log('Number of candidates: ' + (nCandidates - 1));
             if (nCandidates > totalCandidates) {
                 totalCandidates = nCandidates;
+                updateNumberOfCandidates(totalCandidates);
                 cleanCadidatesTable();
                 getCandidates(nCandidates);
             }
@@ -619,6 +620,11 @@ function hideLoadingVoteButton() {
 
     voteButton.disabled = false;
     voteButton.innerHTML = "VOTE";
+}
+
+function updateNumberOfCandidates(n) {
+    var nCandidates = document.getElementById("n-candidates");
+    nCandidates.innerHTML = n;
 }
 
 function deleteLocalAndReload() {
