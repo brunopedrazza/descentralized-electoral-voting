@@ -114,15 +114,10 @@ function useExistingContract() {
     try {
         var existingContractAddress = document.getElementById("contract-address").value;
         window.ElectoralVoting = new window.web3.eth.Contract(contractABI, existingContractAddress);
-        if (window.ElectoralVoting) {
-            console.log('Existing ElectoralVoting contract has loaded.');
-            window.localStorage.setItem("contractAddress", existingContractAddress);
-            window.contractAddress = existingContractAddress;
-            getElectionInformations();
-        }
-        else {
-            showErrorReason('A contract with this address was not found.');
-        }
+        console.log('Existing ElectoralVoting contract has loaded.');
+        window.localStorage.setItem("contractAddress", existingContractAddress);
+        window.contractAddress = existingContractAddress;
+        getElectionInformations();
     }
     catch (error) {
         showErrorReason('A contract with this address was not found.');
@@ -132,14 +127,9 @@ function useExistingContract() {
 function useLocalStorageAddress(address) {
     try {
         window.ElectoralVoting = new window.web3.eth.Contract(contractABI, address);
-        if (window.ElectoralVoting) {
-            console.log('Local storage ElectoralVoting contract has loaded.');
-            window.contractAddress = address;
-            getElectionInformations();
-        }
-        else {
-            showErrorReason('A contract with this address was not found.');
-        }
+        console.log('Local storage ElectoralVoting contract has loaded.');
+        window.contractAddress = address;
+        getElectionInformations();
     }
     catch {
         showErrorReason('A contract with this address was not found.');
@@ -182,8 +172,6 @@ async function addCandidate(name, politicalParty, number) {
 }
 
 async function getElectionInformations() {
-    getNumberOfCandidates();
-    setInterval(getNumberOfCandidates, 10000);
     window.ElectoralVoting.methods.getElectionInformations()
         .call({ from: window.web3.eth.defaultAccount })
         .then(function (result) {
@@ -204,8 +192,15 @@ async function getElectionInformations() {
             changeResponsibleMessage();
         })
         .catch(function (error) {
-            logError(error.reason);
-            showErrorReason(error.reason);
+            if (error) {
+                logError(error.reason);
+                showErrorReason(error.reason);
+            }
+            else {
+                var message = "Unable to retrieve contract information."
+                logError(message);
+                showErrorReason(message);
+            }
         });
 }
 
@@ -415,6 +410,9 @@ function hideSuccessMessage() {
 
 function showInformations() {
     var info = window.votingInformation;
+
+    getNumberOfCandidates();
+    setInterval(getNumberOfCandidates, 10000);
 
     hideFirstStep();
     showSecondStep();
