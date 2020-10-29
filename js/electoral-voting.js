@@ -57,8 +57,8 @@ else {
     });
 
     window.ethereum.on('chainChanged', (chainId) => {
+        window.localStorage.removeItem("contractAddress");
         window.location.reload();
-        console.log("Chain changed to " + chainId);
     });
 }
 
@@ -97,6 +97,7 @@ async function deployContract(politicalOffice, place, year, startTime, endTime) 
                 showSuccessMessage(message);
                 console.log('Contract address: ' + newContractInstance._address)
                 window.localStorage.setItem("contractAddress", newContractInstance._address);
+                window.contractAddress = newContractInstance._address;
                 window.ElectoralVoting = newContractInstance;
                 hideLoadingDeployOrAddButton("deploy-contract", "Deploy contract");
                 getElectionInformations();
@@ -115,6 +116,7 @@ function useExistingContract() {
         window.ElectoralVoting = new window.web3.eth.Contract(contractABI, existingContractAddress);
         console.log('Existing ElectoralVoting contract has loaded.');
         window.localStorage.setItem("contractAddress", existingContractAddress);
+        window.contractAddress = existingContractAddress;
         getElectionInformations();
     }
     catch (error) {
@@ -126,6 +128,7 @@ function useLocalStorageAddress(address) {
     try {
         window.ElectoralVoting = new window.web3.eth.Contract(contractABI, address);
         console.log('Local storage ElectoralVoting contract has loaded.');
+        window.contractAddress = address;
         getElectionInformations();
     }
     catch {
@@ -134,7 +137,6 @@ function useLocalStorageAddress(address) {
 }
 
 function callAddCandidate() {
-    showLoadingDeployOrAddButton("add-candidate", "Adding candidate...");
 
     var name = document.getElementById("candidate-name").value;
     var politicalParty = document.getElementById("political-party").value;
@@ -155,22 +157,18 @@ async function addCandidate(name, politicalParty, number) {
                 console.log(receipt);
             })
             .catch(function (error) {
-                if (error.code == 4001) error.reason = 'Transaction was rejected by you.'
-                hideLoadingDeployOrAddButton("add-candidate", "Add");
+                if (error.code == 4001) error.reason = 'Transaction was rejected by you.';
                 logError(error.reason);
                 showErrorReason(error.reason);
             });
     }
     catch {
         logError('addCandidate');
-        hideLoadingDeployOrAddButton("add-candidate", "Add");
         showErrorReason('Invalid inputs to add a candidate.');
     }
 }
 
 async function getElectionInformations() {
-    getNumberOfCandidates();
-    setInterval(getNumberOfCandidates, 10000);
     window.ElectoralVoting.methods.getElectionInformations()
         .call({ from: window.web3.eth.defaultAccount })
         .then(function (result) {
@@ -191,8 +189,15 @@ async function getElectionInformations() {
             changeResponsibleMessage();
         })
         .catch(function (error) {
-            logError(error.reason);
-            showErrorReason(error.reason);
+            if (error.reason) {
+                logError(error.reason);
+                showErrorReason(error.reason);
+            }
+            else {
+                var message = "Unable to retrieve contract information."
+                logError(message);
+                showErrorReason(message);
+            }
         });
 }
 
@@ -204,6 +209,7 @@ async function getNumberOfCandidates() {
             console.log('Number of candidates: ' + (nCandidates - 1));
             if (nCandidates > totalCandidates) {
                 totalCandidates = nCandidates;
+                updateNumberOfCandidates(totalCandidates - 1);
                 cleanCadidatesTable();
                 getCandidates(nCandidates);
             }
@@ -403,12 +409,16 @@ function hideSuccessMessage() {
 function showInformations() {
     var info = window.votingInformation;
 
+    getNumberOfCandidates();
+    setInterval(getNumberOfCandidates, 10000);
+
     hideFirstStep();
     showSecondStep();
 
     showOrNotAddCandidate();
 
     changeTitle(info.politicalOffice + " election in " + info.place + " " + info.year);
+    changeSubtitle("Contract address: " + window.contractAddress);
 
     fillInfo("responsible-info", info.responsible);
     fillInfo("political-office-info", info.politicalOffice);
@@ -505,9 +515,14 @@ function changeTitle(text) {
     title.innerHTML = text;
 }
 
+function changeSubtitle(text) {
+    var subtitle = document.getElementById("subtitle");
+    subtitle.innerHTML = text;
+}
+
 function changeCurrentAddress(address) {
     var currentAddress = document.getElementById("current-address");
-    currentAddress.innerHTML = address;
+    currentAddress.innerHTML = "Current address: " + address;
 }
 
 function changeResponsibleMessage() {
@@ -602,6 +617,11 @@ function hideLoadingVoteButton() {
 
     voteButton.disabled = false;
     voteButton.innerHTML = "VOTE";
+}
+
+function updateNumberOfCandidates(n) {
+    var nCandidates = document.getElementById("n-candidates");
+    nCandidates.innerHTML = n;
 }
 
 function deleteLocalAndReload() {
