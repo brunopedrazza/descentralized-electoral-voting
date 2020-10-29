@@ -81,7 +81,7 @@ async function deployContract(politicalOffice, place, year, startTime, endTime) 
     console.log("Deploying contract with these arguments:");
     console.log(args);
     try {
-        if (!window.web3.eth.defaultAccount)  throw new Error({ message: "No account selected" });
+        if (!window.web3.eth.defaultAccount)  throw new Error("No account selected");
         contractToBeDeployed.deploy({ data: contractByteCode, arguments: args })
             .send({ from: window.web3.eth.defaultAccount })
             .on('transactionHash', function (transactionHash) { console.log(transactionHash); })
