@@ -522,7 +522,7 @@ function changeSubtitle(text) {
 
 function changeCurrentAddress(address) {
     var currentAddress = document.getElementById("current-address");
-    currentAddress.innerHTML = address;
+    currentAddress.innerHTML = "Current address: " + address;
 }
 
 function changeResponsibleMessage() {
