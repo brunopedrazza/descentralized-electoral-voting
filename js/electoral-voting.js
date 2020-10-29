@@ -137,7 +137,6 @@ function useLocalStorageAddress(address) {
 }
 
 function callAddCandidate() {
-    showLoadingDeployOrAddButton("add-candidate", "Adding candidate...");
 
     var name = document.getElementById("candidate-name").value;
     var politicalParty = document.getElementById("political-party").value;
@@ -158,15 +157,13 @@ async function addCandidate(name, politicalParty, number) {
                 console.log(receipt);
             })
             .catch(function (error) {
-                if (error.code == 4001) error.reason = 'Transaction was rejected by you.'
-                hideLoadingDeployOrAddButton("add-candidate", "Add");
+                if (error.code == 4001) error.reason = 'Transaction was rejected by you.';
                 logError(error.reason);
                 showErrorReason(error.reason);
             });
     }
     catch {
         logError('addCandidate');
-        hideLoadingDeployOrAddButton("add-candidate", "Add");
         showErrorReason('Invalid inputs to add a candidate.');
     }
 }
