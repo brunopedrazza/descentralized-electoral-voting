@@ -76,6 +76,7 @@ function callDeployContract() {
 }
 
 async function deployContract(politicalOffice, place, year, startTime, endTime) {
+    if (!window.web3.eth.defaultAccount)  throw "No account selected";
     var args = [politicalOffice, place, year, startTime, endTime];
     showLoadingDeployOrAddButton("deploy-contract", "Deploying contract...");
     console.log("Deploying contract with these arguments:");
@@ -103,7 +104,7 @@ async function deployContract(politicalOffice, place, year, startTime, endTime) 
                 getElectionInformations();
             });
     }
-    catch {
+    catch (error) {
         logError('deployContract');
         hideLoadingDeployOrAddButton("deploy-contract", "Deploy contract");
         showErrorReason('Invalid inputs to deploy the contract.');
