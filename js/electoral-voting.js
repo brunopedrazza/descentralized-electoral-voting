@@ -212,7 +212,7 @@ async function getNumberOfCandidates() {
             console.log('Number of candidates: ' + (nCandidates - 1));
             if (nCandidates > totalCandidates) {
                 totalCandidates = nCandidates;
-                updateNumberOfCandidates(totalCandidates);
+                updateNumberOfCandidates(totalCandidates - 1);
                 cleanCadidatesTable();
                 getCandidates(nCandidates);
             }
