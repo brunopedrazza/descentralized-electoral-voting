@@ -192,7 +192,7 @@ async function getElectionInformations() {
             changeResponsibleMessage();
         })
         .catch(function (error) {
-            if (error) {
+            if (error.reason) {
                 logError(error.reason);
                 showErrorReason(error.reason);
             }
