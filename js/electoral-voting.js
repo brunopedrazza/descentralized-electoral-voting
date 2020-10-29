@@ -97,6 +97,7 @@ async function deployContract(politicalOffice, place, year, startTime, endTime) 
                 showSuccessMessage(message);
                 console.log('Contract address: ' + newContractInstance._address)
                 window.localStorage.setItem("contractAddress", newContractInstance._address);
+                window.contractAddress = newContractInstance._address;
                 window.ElectoralVoting = newContractInstance;
                 hideLoadingDeployOrAddButton("deploy-contract", "Deploy contract");
                 getElectionInformations();
@@ -113,9 +114,15 @@ function useExistingContract() {
     try {
         var existingContractAddress = document.getElementById("contract-address").value;
         window.ElectoralVoting = new window.web3.eth.Contract(contractABI, existingContractAddress);
-        console.log('Existing ElectoralVoting contract has loaded.');
-        window.localStorage.setItem("contractAddress", existingContractAddress);
-        getElectionInformations();
+        if (window.ElectoralVoting) {
+            console.log('Existing ElectoralVoting contract has loaded.');
+            window.localStorage.setItem("contractAddress", existingContractAddress);
+            window.contractAddress = existingContractAddress;
+            getElectionInformations();
+        }
+        else {
+            showErrorReason('A contract with this address was not found.');
+        }
     }
     catch (error) {
         showErrorReason('A contract with this address was not found.');
@@ -125,8 +132,14 @@ function useExistingContract() {
 function useLocalStorageAddress(address) {
     try {
         window.ElectoralVoting = new window.web3.eth.Contract(contractABI, address);
-        console.log('Local storage ElectoralVoting contract has loaded.');
-        getElectionInformations();
+        if (window.ElectoralVoting) {
+            console.log('Local storage ElectoralVoting contract has loaded.');
+            window.contractAddress = address;
+            getElectionInformations();
+        }
+        else {
+            showErrorReason('A contract with this address was not found.');
+        }
     }
     catch {
         showErrorReason('A contract with this address was not found.');
@@ -409,6 +422,7 @@ function showInformations() {
     showOrNotAddCandidate();
 
     changeTitle(info.politicalOffice + " election in " + info.place + " " + info.year);
+    changeSubtitle("Contract address: " + window.contractAddress);
 
     fillInfo("responsible-info", info.responsible);
     fillInfo("political-office-info", info.politicalOffice);
@@ -503,6 +517,11 @@ function createSpanElement(text, elementId) {
 function changeTitle(text) {
     var title = document.getElementById("title");
     title.innerHTML = text;
+}
+
+function changeSubtitle(text) {
+    var subtitle = document.getElementById("subtitle");
+    subtitle.innerHTML = text;
 }
 
 function changeCurrentAddress(address) {
