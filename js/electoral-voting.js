@@ -207,22 +207,27 @@ async function getElectionInformations() {
 }
 
 async function getNumberOfCandidates() {
-    window.ElectoralVoting.methods.getNumberOfCandidates()
-        .call({ from: window.web3.eth.defaultAccount })
-        .then(function (result) {
-            var nCandidates = parseInt(result);
-            console.log('Number of candidates: ' + (nCandidates - 1));
-            if (nCandidates > totalCandidates) {
-                totalCandidates = nCandidates;
-                updateNumberOfCandidates(totalCandidates - 1);
-                cleanCadidatesTable();
-                getCandidates(nCandidates);
-            }
-        })
-        .catch(function (error) {
-            logError(error.reason);
-            showErrorReason(error.reason);
-        });
+    try {
+        window.ElectoralVoting.methods.getNumberOfCandidates()
+            .call({ from: window.web3.eth.defaultAccount })
+            .then(function (result) {
+                var nCandidates = parseInt(result);
+                console.log('Number of candidates: ' + (nCandidates - 1));
+                if (nCandidates > totalCandidates) {
+                    totalCandidates = nCandidates;
+                    updateNumberOfCandidates(totalCandidates - 1);
+                    cleanCadidatesTable();
+                    getCandidates(nCandidates);
+                }
+            })
+            .catch(function (error) {
+                logError(error.reason);
+                showErrorReason(error.reason);
+            });
+    }
+    catch (error) {
+        console.log(error);
+    }
 }
 
 async function getCandidates(numberOfCandidates) {
