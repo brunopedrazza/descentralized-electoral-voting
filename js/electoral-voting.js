@@ -81,6 +81,7 @@ async function deployContract(politicalOffice, place, year, startTime, endTime) 
     console.log("Deploying contract with these arguments:");
     console.log(args);
     try {
+        if (!window.web3.eth.defaultAccount)  throw new Error("No account selected");
         contractToBeDeployed.deploy({ data: contractByteCode, arguments: args })
             .send({ from: window.web3.eth.defaultAccount })
             .on('transactionHash', function (transactionHash) { console.log(transactionHash); })
@@ -103,10 +104,14 @@ async function deployContract(politicalOffice, place, year, startTime, endTime) 
                 getElectionInformations();
             });
     }
-    catch {
+    catch (error) {
+        var errorMessage = 'Invalid inputs to deploy the contract.';
+        if (error.message) {
+            errorMessage = error.message;
+        }
         logError('deployContract');
         hideLoadingDeployOrAddButton("deploy-contract", "Deploy contract");
-        showErrorReason('Invalid inputs to deploy the contract.');
+        showErrorReason(errorMessage);
     }
 }
 
@@ -202,22 +207,27 @@ async function getElectionInformations() {
 }
 
 async function getNumberOfCandidates() {
-    window.ElectoralVoting.methods.getNumberOfCandidates()
-        .call({ from: window.web3.eth.defaultAccount })
-        .then(function (result) {
-            var nCandidates = parseInt(result);
-            console.log('Number of candidates: ' + (nCandidates - 1));
-            if (nCandidates > totalCandidates) {
-                totalCandidates = nCandidates;
-                updateNumberOfCandidates(totalCandidates - 1);
-                cleanCadidatesTable();
-                getCandidates(nCandidates);
-            }
-        })
-        .catch(function (error) {
-            logError(error.reason);
-            showErrorReason(error.reason);
-        });
+    try {
+        window.ElectoralVoting.methods.getNumberOfCandidates()
+            .call({ from: window.web3.eth.defaultAccount })
+            .then(function (result) {
+                var nCandidates = parseInt(result);
+                console.log('Number of candidates: ' + (nCandidates - 1));
+                if (nCandidates > totalCandidates) {
+                    totalCandidates = nCandidates;
+                    updateNumberOfCandidates(totalCandidates - 1);
+                    cleanCadidatesTable();
+                    getCandidates(nCandidates);
+                }
+            })
+            .catch(function (error) {
+                logError(error.reason);
+                showErrorReason(error.reason);
+            });
+    }
+    catch (error) {
+        console.log(error);
+    }
 }
 
 async function getCandidates(numberOfCandidates) {
